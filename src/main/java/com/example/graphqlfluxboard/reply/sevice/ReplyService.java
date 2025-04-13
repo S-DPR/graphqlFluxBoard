@@ -43,4 +43,14 @@ public class ReplyService {
     public Mono<Void> deleteReply(String replyId) {
         return replyRepository.deleteById(replyId);
     }
+
+    public Mono<Void> deleteById(String id, String password) {
+        return reply(id)
+                .flatMap(reply -> {
+                    if (passwordService.checkPassword(password, reply.getPassword())) {
+                        return deleteReply(id);
+                    }
+                    return Mono.error(new RuntimeException("Invalid password"));
+                });
+    }
 }

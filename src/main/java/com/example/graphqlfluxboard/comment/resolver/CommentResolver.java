@@ -15,9 +15,9 @@ import org.springframework.stereotype.Controller;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @Controller
 @Slf4j
@@ -48,7 +48,7 @@ public class CommentResolver {
         return replyService.findAllByCommentIds(commentIds)
                 .groupBy(Reply::getCommentId)
                 .flatMap(groupedFlux -> groupedFlux
-                        .collectList()
+                        .collectSortedList(Comparator.comparing(Reply::getCreatedAt))
                         .map(list -> Map.entry(groupedFlux.key(), list)))
                 .collectMap(Map.Entry::getKey, Map.Entry::getValue);
     }
@@ -60,6 +60,6 @@ public class CommentResolver {
 
     @MutationMapping
     public Mono<Boolean> deleteComment(@Argument String commentId, @Argument String password) {
-        return commentService.deleteComment(commentId).thenReturn(true);
+        return commentService.deleteById(commentId, password).thenReturn(true);
     }
 }

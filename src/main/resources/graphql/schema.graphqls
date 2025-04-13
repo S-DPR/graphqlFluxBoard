@@ -1,16 +1,22 @@
 type Query {
     posts(postFilterInput: PostFilterInput): [Post]
-    post(postId: String!): Post
+    post(postId: ID!): Post
 
     comments: [Comment]
-    commentsByPostId(postId: String!): [Comment]
-    comment(commentId: String!): Comment
+    commentsByPostId(postId: ID!): [Comment]
+    comment(commentId: ID!): Comment
+
+    replies: [Reply]
+    reply(replyId: ID!): Reply
 }
 
 type Mutation {
     createPost(postInput: PostInput!): Post
-    deletePost(postId: String!, password: String!): Boolean
+    deletePost(postId: ID!, password: String!): Boolean
 
     createComment(commentInput: CommentInput!): Comment
-    deleteComment(commentId: String!, password: String!): Boolean
+    deleteComment(commentId: ID!, password: String!): Boolean
+
+    createReply(replyInput: ReplyInput!): Reply
+    deleteReply(replyId: ID!, password: String!): Boolean
 }

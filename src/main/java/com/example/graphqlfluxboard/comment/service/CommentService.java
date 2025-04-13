@@ -41,4 +41,14 @@ public class CommentService {
     public Mono<Void> deleteComment(String id) {
         return commentRepository.deleteById(id);
     }
+
+    public Mono<Void> deleteById(String id, String password) {
+        return getComment(id)
+                .flatMap(comment -> {
+                    if (passwordService.checkPassword(password, comment.getPassword())) {
+                        return deleteComment(id);
+                    }
+                    return Mono.error(new RuntimeException("Invalid password"));
+                });
+    }
 }

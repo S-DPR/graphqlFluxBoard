@@ -5,3 +5,10 @@ type Reply {
     content: String
     createdAt: String
 }
+
+input ReplyInput {
+    commentId: ID!
+    authorName: String
+    password: String
+    content: String
+}

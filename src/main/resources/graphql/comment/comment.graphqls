@@ -13,4 +13,3 @@ input CommentInput {
     password: String
     comment: String
 }
-
