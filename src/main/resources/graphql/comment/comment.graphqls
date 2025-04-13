@@ -1,14 +1,14 @@
 type Comment {
-    id: String
-    postId: String
-    parentCommentId: String
+    id: ID!
+    postId: ID!
     authorName: String
     comment: String
+    replies: [Reply!]!
+    createdAt: String
 }
 
 input CommentInput {
-    postId: String
-    parentCommentId: String
+    postId: ID!
     authorName: String
     password: String
     comment: String

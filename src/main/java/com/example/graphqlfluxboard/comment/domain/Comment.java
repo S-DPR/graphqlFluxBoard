@@ -20,7 +20,6 @@ public class Comment {
     private String id;
 
     private String postId;
-    private String parentCommentId; // 답글이 아닌 댓글일 경우 빈 값
     private String authorName;
     private String password;
     private String comment;
@@ -30,7 +29,6 @@ public class Comment {
         return Comment.builder()
                 .comment(commentInput.getComment())
                 .authorName(commentInput.getAuthorName())
-                .parentCommentId(commentInput.getParentCommentId())
                 .password(password)
                 .postId(commentInput.getPostId())
                 .createdAt(LocalDateTime.now())
