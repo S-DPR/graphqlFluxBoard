@@ -1,0 +1,15 @@
+type Query {
+    posts(postFilterInput: PostFilterInput): [Post]
+    post(postId: String!): Post
+
+    comments: [Comment]
+    comment(commentId: String!): Comment
+}
+
+type Mutation {
+    createPost(postInput: PostInput!): Post
+    deletePost(postId: String!, password: String!): Boolean
+
+    createComment(commentInput: CommentInput!): Comment
+    deleteComment(commentId: String!, password: String!): Boolean
+}

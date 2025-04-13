@@ -1,13 +1,3 @@
-type Query {
-    posts(postFilterInput: PostFilterInput): [Post]
-    post(postId: String!): Post
-}
-
-type Mutation {
-    createPost(postInput: PostInput!): Post
-    deletePost(postId: String!, password: String!): Boolean
-}
-
 type Post {
     id: String
     title: String

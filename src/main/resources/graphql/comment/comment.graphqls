@@ -1,0 +1,16 @@
+type Comment {
+    id: String
+    postId: String
+    parentCommentId: String
+    authorName: String
+    comment: String
+}
+
+input CommentInput {
+    postId: String
+    parentCommentId: String
+    authorName: String
+    password: String
+    comment: String
+}
+
