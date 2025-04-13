@@ -15,8 +15,8 @@ public class PostService {
     private final PostRepository postRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public Mono<Post> findById(String id) {
-        return postRepository.findById(id);
+    public Mono<Post> findById(String postId) {
+        return postRepository.findById(postId);
     }
 
     public Flux<Post> findAll() {
@@ -36,8 +36,17 @@ public class PostService {
         return postRepository.deleteById(id);
     }
 
+    public Mono<Void> deleteById(String id, String password) {
+        return findById(id)
+                .flatMap(post -> {
+                    if (checkPassword(post.getPassword(), password)) {
+                        return postRepository.delete(post);
+                    }
+                    return Mono.error(new RuntimeException("Invalid password"));
+                });
+    }
+
     public boolean checkPassword(String raw, String hashed) {
         return passwordEncoder.matches("sa" + raw + "lt", hashed);
     }
-
 }

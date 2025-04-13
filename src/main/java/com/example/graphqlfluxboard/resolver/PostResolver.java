@@ -3,6 +3,7 @@ package com.example.graphqlfluxboard.resolver;
 import com.example.graphqlfluxboard.domain.Post;
 import com.example.graphqlfluxboard.dto.PostInput;
 import com.example.graphqlfluxboard.service.PostService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.MutationMapping;
@@ -13,12 +14,9 @@ import reactor.core.publisher.Mono;
 
 @Slf4j
 @Controller
+@RequiredArgsConstructor
 public class PostResolver {
     private final PostService postService;
-
-    public PostResolver(PostService postService) {
-        this.postService = postService;
-    }
 
     @QueryMapping
     public Flux<Post> posts() {
@@ -26,8 +24,8 @@ public class PostResolver {
     }
 
     @QueryMapping
-    public Mono<Post> post(@Argument String id) {
-        return postService.findById(id);
+    public Mono<Post> post(@Argument String postId) {
+        return postService.findById(postId);
     }
 
     @MutationMapping
@@ -36,7 +34,7 @@ public class PostResolver {
     }
 
     @MutationMapping
-    public Mono<Boolean> deletePost(@Argument String id) {
-        return postService.deleteById(id).thenReturn(true);
+    public Mono<Boolean> deletePost(@Argument String postId, @Argument String password) {
+        return postService.deleteById(postId, password).thenReturn(true);
     }
 }

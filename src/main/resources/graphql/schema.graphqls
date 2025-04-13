@@ -1,21 +1,25 @@
 type Query {
     posts: [Post]
-    post(id: String!): Post
+    post(postId: String!): Post
 }
 
 type Mutation {
     createPost(postInput: PostInput!): Post
-    deletePost(id: String!): Boolean
+    deletePost(postId: String!, password: String!): Boolean
 }
 
 type Post {
     id: String
     title: String
     content: String
+    authorName: String
+    password: String
     createdAt: String
 }
 
 input PostInput {
     title: String
     content: String
+    authorName: String
+    password: String
 }
