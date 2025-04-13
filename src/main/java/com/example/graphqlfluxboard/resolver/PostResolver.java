@@ -1,6 +1,7 @@
 package com.example.graphqlfluxboard.resolver;
 
 import com.example.graphqlfluxboard.domain.Post;
+import com.example.graphqlfluxboard.dto.PostFilterInput;
 import com.example.graphqlfluxboard.dto.PostInput;
 import com.example.graphqlfluxboard.service.PostService;
 import lombok.RequiredArgsConstructor;
@@ -19,8 +20,8 @@ public class PostResolver {
     private final PostService postService;
 
     @QueryMapping
-    public Flux<Post> posts() {
-        return postService.findAll();
+    public Flux<Post> posts(@Argument PostFilterInput postFilterInput) {
+        return postService.findAll(postFilterInput);
     }
 
     @QueryMapping

@@ -1,5 +1,5 @@
 type Query {
-    posts: [Post]
+    posts(postFilterInput: PostFilterInput): [Post]
     post(postId: String!): Post
 }
 
@@ -22,4 +22,19 @@ input PostInput {
     content: String
     authorName: String
     password: String
+}
+
+input PostFilterInput {
+    type: FilterType
+    keyword: String
+    page: Int
+    sizePerPage: Int
+}
+
+enum FilterType {
+    NONE
+    AUTHOR
+    TITLE
+    CONTENT
+    TITLE_AND_CONTENT
 }

@@ -18,10 +18,10 @@ public class PostController {
         this.postService = postService;
     }
 
-    @GetMapping("/")
-    public Flux<Post> findAll() {
-        return postService.findAll();
-    }
+//    @GetMapping("/")
+//    public Flux<Post> findAll() {
+//        return postService.findAll();
+//    }
 
     @GetMapping("/{id}")
     public Mono<ResponseEntity<Post>> findById(@PathVariable String id) {
