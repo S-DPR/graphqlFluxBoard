@@ -13,7 +13,6 @@ type Post {
     title: String
     content: String
     authorName: String
-    password: String
     createdAt: String
 }
 
@@ -29,6 +28,8 @@ input PostFilterInput {
     keyword: String
     page: Int
     sizePerPage: Int
+    sortField: String
+    sortOrder: SortOrder
 }
 
 enum FilterType {
@@ -38,3 +39,9 @@ enum FilterType {
     CONTENT
     TITLE_AND_CONTENT
 }
+
+enum SortOrder {
+    ASC
+    DESC
+}
+

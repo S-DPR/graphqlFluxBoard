@@ -4,9 +4,11 @@ import com.example.graphqlfluxboard.domain.Post;
 import com.example.graphqlfluxboard.dto.PostFilterInput;
 import com.example.graphqlfluxboard.dto.PostInput;
 import com.example.graphqlfluxboard.enums.FilterType;
+import com.example.graphqlfluxboard.enums.SortOrder;
 import com.example.graphqlfluxboard.repos.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.elasticsearch.ReactiveElasticsearchClientAutoConfiguration;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.ReactiveMongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -18,10 +20,12 @@ import reactor.core.publisher.Mono;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
 public class PostService {
+    private static final Set<String> ALLOWED_SORT_FIELDS = Set.of("createdAt", "title", "authorName");
     private final PostRepository postRepository;
     private final ReactiveMongoTemplate mongoTemplate;
     private final PasswordEncoder passwordEncoder;
@@ -31,13 +35,24 @@ public class PostService {
     }
 
     public Flux<Post> findAll(PostFilterInput postFilterInput) {
+        if (!ALLOWED_SORT_FIELDS.contains(postFilterInput.getSortField())) {
+            throw new RuntimeException("sort field is not supported");
+        }
+
         List<Criteria> criteria = getCriteria(postFilterInput.getType(), postFilterInput.getKeyword());
         Query query = new Query(new Criteria().andOperator(criteria));
         query.skip((long) postFilterInput.getPage() * postFilterInput.getSizePerPage());
         query.limit(postFilterInput.getSizePerPage());
+
+        Sort.Direction direction = Sort.Direction.DESC;
+        if (postFilterInput.getSortOrder() == SortOrder.ASC) {
+            direction = Sort.Direction.ASC;
+        }
+        query.with(Sort.by(direction, postFilterInput.getSortField()));
         return mongoTemplate.find(query, Post.class);
     }
 
+    // Criteria는 처음써보는데 신기하네
     private List<Criteria> getCriteria(FilterType filterType, String keyword) {
         if (filterType == null || keyword == null || keyword.isBlank()) {
             return Collections.emptyList();
