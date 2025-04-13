@@ -3,7 +3,7 @@ type Comment {
     postId: ID!
     authorName: String
     comment: String
-    replies: [Reply!]!
+    replies: [Reply!]
     createdAt: String
 }
 
