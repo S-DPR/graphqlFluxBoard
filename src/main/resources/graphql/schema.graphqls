@@ -3,6 +3,7 @@ type Query {
     post(postId: String!): Post
 
     comments: [Comment]
+    commentsByPostId(postId: String!): [Comment]
     comment(commentId: String!): Comment
 }
 

@@ -5,6 +5,8 @@ import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.time.LocalDateTime;
+
 @Document(collection = "comment")
 @Getter
 @Setter
@@ -22,6 +24,7 @@ public class Comment {
     private String authorName;
     private String password;
     private String comment;
+    private LocalDateTime createdAt;
 
     public static Comment of(CommentInput commentInput, String password) {
         return Comment.builder()
@@ -30,6 +33,7 @@ public class Comment {
                 .parentCommentId(commentInput.getParentCommentId())
                 .password(password)
                 .postId(commentInput.getPostId())
+                .createdAt(LocalDateTime.now())
                 .build();
     }
 }

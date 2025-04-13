@@ -28,6 +28,11 @@ public class CommentResolver {
         return commentService.getComment(commentId);
     }
 
+    @QueryMapping
+    public Flux<Comment> commentsByPostId(@Argument String postId) {
+        return commentService.getCommentByPostId(postId);
+    }
+
     @MutationMapping
     public Mono<Comment> createComment(@Argument CommentInput commentInput) {
         return commentService.saveComment(commentInput);

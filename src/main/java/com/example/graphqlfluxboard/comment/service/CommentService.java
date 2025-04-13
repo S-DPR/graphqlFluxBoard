@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.Map;
+
 @RequiredArgsConstructor
 @Service
 public class CommentService {
@@ -21,6 +23,10 @@ public class CommentService {
 
     public Mono<Comment> getComment(String id) {
         return commentRepository.findById(id);
+    }
+
+    public Flux<Comment> getCommentByPostId(String postId) {
+        return commentRepository.findAllByPostIdOrderByCreatedAtAsc(postId);
     }
 
     public Mono<Comment> saveComment(Comment comment) {
