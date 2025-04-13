@@ -1,4 +1,4 @@
-package com.example.graphqlfluxboard.enums;
+package com.example.graphqlfluxboard.post.enums;
 
 public enum FilterType {
     NONE,

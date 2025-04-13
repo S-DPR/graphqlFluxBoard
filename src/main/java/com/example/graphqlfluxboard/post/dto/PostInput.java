@@ -1,4 +1,4 @@
-package com.example.graphqlfluxboard.dto;
+package com.example.graphqlfluxboard.post.dto;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;

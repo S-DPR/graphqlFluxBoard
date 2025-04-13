@@ -1,9 +1,9 @@
-package com.example.graphqlfluxboard.resolver;
+package com.example.graphqlfluxboard.post.resolver;
 
-import com.example.graphqlfluxboard.domain.Post;
-import com.example.graphqlfluxboard.dto.PostFilterInput;
-import com.example.graphqlfluxboard.dto.PostInput;
-import com.example.graphqlfluxboard.service.PostService;
+import com.example.graphqlfluxboard.post.domain.Post;
+import com.example.graphqlfluxboard.post.dto.PostFilterInput;
+import com.example.graphqlfluxboard.post.dto.PostInput;
+import com.example.graphqlfluxboard.post.service.PostService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.graphql.data.method.annotation.Argument;

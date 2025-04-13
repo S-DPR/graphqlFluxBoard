@@ -1,7 +1,7 @@
-package com.example.graphqlfluxboard.dto;
+package com.example.graphqlfluxboard.post.dto;
 
-import com.example.graphqlfluxboard.enums.FilterType;
-import com.example.graphqlfluxboard.enums.SortOrder;
+import com.example.graphqlfluxboard.post.enums.FilterType;
+import com.example.graphqlfluxboard.post.enums.SortOrder;
 import lombok.*;
 
 @Getter

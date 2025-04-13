@@ -1,10 +1,9 @@
-package com.example.graphqlfluxboard.controller;
+package com.example.graphqlfluxboard.post.controller;
 
-import com.example.graphqlfluxboard.domain.Post;
-import com.example.graphqlfluxboard.service.PostService;
+import com.example.graphqlfluxboard.post.domain.Post;
+import com.example.graphqlfluxboard.post.service.PostService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.LocalDateTime;

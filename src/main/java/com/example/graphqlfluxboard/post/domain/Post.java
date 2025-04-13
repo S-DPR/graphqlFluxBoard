@@ -1,6 +1,6 @@
-package com.example.graphqlfluxboard.domain;
+package com.example.graphqlfluxboard.post.domain;
 
-import com.example.graphqlfluxboard.dto.PostInput;
+import com.example.graphqlfluxboard.post.dto.PostInput;
 import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
