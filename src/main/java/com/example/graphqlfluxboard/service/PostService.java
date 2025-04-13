@@ -7,7 +7,6 @@ import com.example.graphqlfluxboard.enums.FilterType;
 import com.example.graphqlfluxboard.enums.SortOrder;
 import com.example.graphqlfluxboard.repos.PostRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.boot.autoconfigure.elasticsearch.ReactiveElasticsearchClientAutoConfiguration;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.ReactiveMongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -17,7 +16,6 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
@@ -74,7 +72,7 @@ public class PostService {
     }
 
     public Mono<Post> save(PostInput postInput) {
-        String password = passwordEncoder.encode("sa" + postInput.getPassword() + "lt");
+        String password = passwordEncoder.encode(postInput.getPassword());
         return save(Post.of(postInput, password));
     }
 
@@ -93,6 +91,6 @@ public class PostService {
     }
 
     public boolean checkPassword(String raw, String hashed) {
-        return passwordEncoder.matches("sa" + raw + "lt", hashed);
+        return passwordEncoder.matches(raw, hashed);
     }
 }
