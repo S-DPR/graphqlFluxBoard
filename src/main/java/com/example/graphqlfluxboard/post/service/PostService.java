@@ -6,6 +6,7 @@ import com.example.graphqlfluxboard.post.dto.PostInput;
 import com.example.graphqlfluxboard.post.enums.FilterType;
 import com.example.graphqlfluxboard.post.enums.SortOrder;
 import com.example.graphqlfluxboard.post.repos.PostRepository;
+import com.example.graphqlfluxboard.utils.PasswordService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.ReactiveMongoTemplate;
@@ -26,7 +27,7 @@ public class PostService {
     private static final Set<String> ALLOWED_SORT_FIELDS = Set.of("createdAt", "title", "authorName");
     private final PostRepository postRepository;
     private final ReactiveMongoTemplate mongoTemplate;
-    private final PasswordEncoder passwordEncoder;
+    private final PasswordService passwordService;
 
     public Mono<Post> findById(String postId) {
         return postRepository.findById(postId);
@@ -72,7 +73,7 @@ public class PostService {
     }
 
     public Mono<Post> save(PostInput postInput) {
-        String password = passwordEncoder.encode(postInput.getPassword());
+        String password = passwordService.encryptPassword(postInput.getPassword());
         return save(Post.of(postInput, password));
     }
 
@@ -83,14 +84,10 @@ public class PostService {
     public Mono<Void> deleteById(String id, String password) {
         return findById(id)
                 .flatMap(post -> {
-                    if (checkPassword(password, post.getPassword())) {
+                    if (passwordService.checkPassword(password, post.getPassword())) {
                         return postRepository.delete(post);
                     }
                     return Mono.error(new RuntimeException("Invalid password"));
                 });
-    }
-
-    public boolean checkPassword(String raw, String hashed) {
-        return passwordEncoder.matches(raw, hashed);
     }
 }

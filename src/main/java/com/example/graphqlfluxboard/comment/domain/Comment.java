@@ -23,12 +23,12 @@ public class Comment {
     private String password;
     private String comment;
 
-    public static Comment of(CommentInput commentInput) {
+    public static Comment of(CommentInput commentInput, String password) {
         return Comment.builder()
                 .comment(commentInput.getComment())
                 .authorName(commentInput.getAuthorName())
                 .parentCommentId(commentInput.getParentCommentId())
-                .password(commentInput.getPassword())
+                .password(password)
                 .postId(commentInput.getPostId())
                 .build();
     }
