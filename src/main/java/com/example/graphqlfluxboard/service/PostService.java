@@ -85,7 +85,7 @@ public class PostService {
     public Mono<Void> deleteById(String id, String password) {
         return findById(id)
                 .flatMap(post -> {
-                    if (checkPassword(post.getPassword(), password)) {
+                    if (checkPassword(password, post.getPassword())) {
                         return postRepository.delete(post);
                     }
                     return Mono.error(new RuntimeException("Invalid password"));
