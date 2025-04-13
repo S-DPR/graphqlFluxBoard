@@ -34,7 +34,8 @@ dependencies {
     testImplementation 'org.springframework.graphql:spring-graphql-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 
-    implementation("com.graphql-java-kickstart:altair-spring-boot-starter:7.0.1")
+    implementation 'com.graphql-java-kickstart:altair-spring-boot-starter:7.0.1'
+    implementation 'org.springframework.security:spring-security-crypto'
 }
 
 tasks.named('test') {

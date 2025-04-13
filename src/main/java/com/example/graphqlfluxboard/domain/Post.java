@@ -21,12 +21,16 @@ public class Post {
 
     private String title;
     private String content;
+    private String authorName;
+    private String password;
     private LocalDateTime createdAt;
 
-    public static Post of(PostInput postInput) {
+    public static Post of(PostInput postInput, String hashedPassword) {
         return Post.builder()
                 .title(postInput.getTitle())
                 .content(postInput.getContent())
+                .authorName(postInput.getAuthorName())
+                .password(hashedPassword)
                 .createdAt(LocalDateTime.now())
                 .build();
     }

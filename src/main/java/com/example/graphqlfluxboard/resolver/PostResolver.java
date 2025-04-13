@@ -31,8 +31,8 @@ public class PostResolver {
     }
 
     @MutationMapping
-    public Mono<Post> createPost(@Argument("postInput") PostInput postInput) {
-        return postService.save(Post.of(postInput));
+    public Mono<Post> createPost(@Argument PostInput postInput) {
+        return postService.save(postInput);
     }
 
     @MutationMapping
