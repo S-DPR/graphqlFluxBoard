@@ -1,14 +1,14 @@
 package com.example.graphqlfluxboard.comment;
 
-import com.example.graphqlfluxboard.comment.domain.Comment;
-import com.example.graphqlfluxboard.comment.dto.CommentInput;
-import com.example.graphqlfluxboard.comment.service.CommentService;
-import com.example.graphqlfluxboard.post.domain.Post;
-import com.example.graphqlfluxboard.post.dto.PostInput;
-import com.example.graphqlfluxboard.post.service.PostService;
-import com.example.graphqlfluxboard.reply.domain.Reply;
-import com.example.graphqlfluxboard.reply.dto.ReplyInput;
-import com.example.graphqlfluxboard.reply.sevice.ReplyService;
+import com.example.graphqlfluxboard.board.comment.domain.Comment;
+import com.example.graphqlfluxboard.board.comment.dto.CommentInput;
+import com.example.graphqlfluxboard.board.comment.service.CommentService;
+import com.example.graphqlfluxboard.board.post.domain.Post;
+import com.example.graphqlfluxboard.board.post.dto.PostInput;
+import com.example.graphqlfluxboard.board.post.service.PostService;
+import com.example.graphqlfluxboard.board.reply.domain.Reply;
+import com.example.graphqlfluxboard.board.reply.dto.ReplyInput;
+import com.example.graphqlfluxboard.board.reply.sevice.ReplyService;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
