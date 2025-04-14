@@ -24,8 +24,8 @@ public class ReplyResolver {
     }
 
     @QueryMapping
-    public Mono<Reply> reply(@Argument String commentId) {
-        return replyService.reply(commentId);
+    public Mono<Reply> reply(@Argument String replyId) {
+        return replyService.reply(replyId);
     }
 
     @MutationMapping
@@ -34,7 +34,7 @@ public class ReplyResolver {
     }
 
     @MutationMapping
-    public Mono<Boolean> deleteReply(@Argument String commentId, @Argument String password) {
-        return replyService.deleteById(commentId, password).thenReturn(true);
+    public Mono<Boolean> deleteReply(@Argument String replyId, @Argument String password) {
+        return replyService.deleteById(replyId, password).thenReturn(true);
     }
 }
