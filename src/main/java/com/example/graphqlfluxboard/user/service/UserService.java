@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class UserService {
@@ -22,6 +24,10 @@ public class UserService {
 
     public Mono<User> findById(String id) {
         return userRepository.findById(id);
+    }
+
+    public Flux<User> findAllByIds(List<String> ids) {
+        return userRepository.findAllByIdIn(ids);
     }
 
     public Mono<User> save(User user) {
