@@ -21,15 +21,15 @@ public class Comment {
 
     private String postId;
     private String authorName;
-    private String password;
+    private String userId;
     private String comment;
     private LocalDateTime createdAt;
 
-    public static Comment of(CommentInput commentInput, String password) {
+    public static Comment of(CommentInput commentInput) {
         return Comment.builder()
                 .comment(commentInput.getComment())
                 .authorName(commentInput.getAuthorName())
-                .password(password)
+                .userId(commentInput.getUserId())
                 .postId(commentInput.getPostId())
                 .createdAt(LocalDateTime.now())
                 .build();
