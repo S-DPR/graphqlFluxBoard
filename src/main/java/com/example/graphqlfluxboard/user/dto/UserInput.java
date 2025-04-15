@@ -12,6 +12,6 @@ import org.springframework.stereotype.Service;
 @ToString
 @EqualsAndHashCode
 public class UserInput {
-    private String loginId;
+    private String username;
     private String password;
 }

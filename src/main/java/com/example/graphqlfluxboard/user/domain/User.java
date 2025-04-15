@@ -17,13 +17,11 @@ public class User {
     @Id
     private String id;
     private String username;
-    private String loginId;
     private String password;
 
     public static User of(UserInput userInput, String password) {
         return User.builder()
                 .username(userInput.getUsername())
-                .loginId(userInput.getLoginId())
                 .password(password)
                 .build();
     }
