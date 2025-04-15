@@ -17,6 +17,7 @@ import reactor.core.publisher.Mono;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Controller
 @Slf4j
@@ -42,14 +43,14 @@ public class CommentResolver {
     }
 
     @BatchMapping(field = "replies", typeName = "Comment")
-    public Mono<Map<String, List<Reply>>> commentsWithReplies(List<Comment> comments) {
-        List<String> commentIds = comments.stream().map(Comment::getId).toList();
+    public Mono<Map<Comment, List<Reply>>> commentsWithReplies(List<Comment> comments) {
+        Map<String, Comment> commentMap = comments.stream().collect(Collectors.toMap(Comment::getId, c -> c));
 
-        return replyService.findAllByCommentIds(commentIds)
+        return replyService.findAllByCommentIds(commentMap.keySet().stream().toList())
                 .groupBy(Reply::getCommentId)
                 .flatMap(groupedFlux -> groupedFlux
                         .collectSortedList(Comparator.comparing(Reply::getCreatedAt))
-                        .map(list -> Map.entry(groupedFlux.key(), list)))
+                        .map(list -> Map.entry(commentMap.get(groupedFlux.key()), list)))
                 .collectMap(Map.Entry::getKey, Map.Entry::getValue);
     }
 
@@ -66,5 +67,15 @@ public class CommentResolver {
     @SchemaMapping(field = "user", typeName = "Comment")
     public Mono<User> getUser(String userId) {
         return userService.findById(userId);
+    }
+
+    @BatchMapping(field = "user", typeName = "Comment")
+    public Mono<Map<Comment, User>> getUsers(List<Comment> comments) {
+        List<String> userIds = comments.stream().map(Comment::getId).distinct().toList();
+        return userService.findAllByIds(userIds)
+                .collectMap(User::getId)
+                .map(userMap -> {
+                    return comments.stream().collect(Collectors.toMap(comment -> comment, comment -> userMap.get(comment.getUserId())));
+                });
     }
 }
