@@ -10,6 +10,7 @@ input PostInput {
     title: String
     content: String
     password: String
+    userId: String!
 }
 
 input PostFilterInput {
