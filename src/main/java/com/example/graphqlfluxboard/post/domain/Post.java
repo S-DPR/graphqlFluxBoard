@@ -21,7 +21,6 @@ public class Post {
 
     private String title;
     private String content;
-    private String authorName;
     private String userId;
     private LocalDateTime createdAt;
 
@@ -29,7 +28,6 @@ public class Post {
         return Post.builder()
                 .title(postInput.getTitle())
                 .content(postInput.getContent())
-                .authorName(postInput.getAuthorName())
                 .userId(postInput.getUserId())
                 .createdAt(LocalDateTime.now())
                 .build();

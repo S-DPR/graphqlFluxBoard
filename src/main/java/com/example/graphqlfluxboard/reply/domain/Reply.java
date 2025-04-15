@@ -20,14 +20,12 @@ public class Reply {
     private String id;
 
     private String commentId;
-    private String authorName;
     private String userId;
     private String content;
     private LocalDateTime createdAt;
 
     public static Reply of(ReplyInput replyInput) {
         return Reply.builder()
-                .authorName(replyInput.getAuthorName())
                 .commentId(replyInput.getCommentId())
                 .userId(replyInput.getUserId())
                 .content(replyInput.getContent())

@@ -1,7 +1,7 @@
 type Comment {
     id: ID!
     postId: ID!
-    authorName: String
+    userId: ID!
     comment: String
     replies: [Reply!]
     createdAt: String
@@ -9,7 +9,7 @@ type Comment {
 
 input CommentInput {
     postId: ID!
-    authorName: String
+    userId: ID!
     password: String
     comment: String
 }

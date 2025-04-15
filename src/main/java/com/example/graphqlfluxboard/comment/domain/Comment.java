@@ -20,7 +20,6 @@ public class Comment {
     private String id;
 
     private String postId;
-    private String authorName;
     private String userId;
     private String comment;
     private LocalDateTime createdAt;
@@ -28,7 +27,6 @@ public class Comment {
     public static Comment of(CommentInput commentInput) {
         return Comment.builder()
                 .comment(commentInput.getComment())
-                .authorName(commentInput.getAuthorName())
                 .userId(commentInput.getUserId())
                 .postId(commentInput.getPostId())
                 .createdAt(LocalDateTime.now())

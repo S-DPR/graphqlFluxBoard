@@ -11,7 +11,6 @@ import lombok.*;
 @EqualsAndHashCode
 public class CommentInput {
     private String postId;
-    private String authorName;
     private String userId;
     private String password;
     private String comment;
