@@ -44,8 +44,8 @@ public class ReplyResolver {
     }
 
     @SchemaMapping(field = "user", typeName = "Reply")
-    public Mono<User> getUser(String userId) {
-        return userService.findById(userId);
+    public Mono<User> getUser(Reply reply) {
+        return userService.findById(reply.getUserId());
     }
 
     @BatchMapping(field = "user", typeName = "Reply")

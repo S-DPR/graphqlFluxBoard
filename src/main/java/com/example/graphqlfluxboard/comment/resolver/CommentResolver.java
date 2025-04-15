@@ -65,13 +65,13 @@ public class CommentResolver {
     }
 
     @SchemaMapping(field = "user", typeName = "Comment")
-    public Mono<User> getUser(String userId) {
-        return userService.findById(userId);
+    public Mono<User> getUser(Comment comment) {
+        return userService.findById(comment.getUserId());
     }
 
     @BatchMapping(field = "user", typeName = "Comment")
     public Mono<Map<Comment, User>> getUsers(List<Comment> comments) {
-        List<String> userIds = comments.stream().map(Comment::getId).distinct().toList();
+        List<String> userIds = comments.stream().map(Comment::getUserId).distinct().toList();
         return userService.findAllByIds(userIds)
                 .collectMap(User::getId)
                 .map(userMap -> {

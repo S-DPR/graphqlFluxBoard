@@ -44,7 +44,7 @@ public class PostResolver {
     }
 
     @SchemaMapping(field = "user", typeName = "Post")
-    public Mono<User> getUser(String userId) {
-        return userService.findById(userId);
+    public Mono<User> getUser(Post post) {
+        return userService.findById(post.getUserId());
     }
 }
