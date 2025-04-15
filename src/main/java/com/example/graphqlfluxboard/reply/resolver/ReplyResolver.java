@@ -43,11 +43,6 @@ public class ReplyResolver {
         return replyService.deleteById(replyId, password).thenReturn(true);
     }
 
-    @SchemaMapping(field = "user", typeName = "Reply")
-    public Mono<User> getUser(Reply reply) {
-        return userService.findById(reply.getUserId());
-    }
-
     @BatchMapping(field = "user", typeName = "Reply")
     public Mono<Map<Reply, User>> getUsers(List<Reply> replies) {
         List<String> userIds = replies.stream().map(Reply::getUserId).distinct().toList();

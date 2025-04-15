@@ -64,11 +64,6 @@ public class CommentResolver {
         return commentService.deleteById(commentId, password).thenReturn(true);
     }
 
-    @SchemaMapping(field = "user", typeName = "Comment")
-    public Mono<User> getUser(Comment comment) {
-        return userService.findById(comment.getUserId());
-    }
-
     @BatchMapping(field = "user", typeName = "Comment")
     public Mono<Map<Comment, User>> getUsers(List<Comment> comments) {
         List<String> userIds = comments.stream().map(Comment::getUserId).distinct().toList();
