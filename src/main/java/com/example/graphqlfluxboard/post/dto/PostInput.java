@@ -13,5 +13,6 @@ public class PostInput {
     private String title;
     private String content;
     private String authorName;
+    private String userId;
     private String password;
 }

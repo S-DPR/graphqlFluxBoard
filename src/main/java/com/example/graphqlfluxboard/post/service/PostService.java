@@ -6,6 +6,7 @@ import com.example.graphqlfluxboard.post.dto.PostInput;
 import com.example.graphqlfluxboard.post.enums.FilterType;
 import com.example.graphqlfluxboard.post.enums.SortOrder;
 import com.example.graphqlfluxboard.post.repos.PostRepository;
+import com.example.graphqlfluxboard.user.service.UserService;
 import com.example.graphqlfluxboard.utils.PasswordService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
@@ -27,6 +28,7 @@ public class PostService {
     private final PostRepository postRepository;
     private final ReactiveMongoTemplate mongoTemplate;
     private final PasswordService passwordService;
+    private final UserService userService;
 
     public Mono<Post> findById(String postId) {
         return postRepository.findById(postId);
@@ -72,8 +74,8 @@ public class PostService {
     }
 
     public Mono<Post> save(PostInput postInput) {
-        String password = passwordService.encryptPassword(postInput.getPassword());
-        return save(Post.of(postInput, password));
+        return userService.verify(postInput.getUserId(), postInput.getPassword())
+                .then(save(Post.of(postInput)));
     }
 
     public Mono<Void> deleteById(String id) {
@@ -82,11 +84,7 @@ public class PostService {
 
     public Mono<Void> deleteById(String id, String password) {
         return findById(id)
-                .flatMap(post -> {
-                    if (passwordService.checkPassword(password, post.getPassword())) {
-                        return postRepository.delete(post);
-                    }
-                    return Mono.error(new RuntimeException("Invalid password"));
-                });
+                .flatMap(post -> userService.verify(post.getUserId(), password))
+                .then(deleteById(id));
     }
 }

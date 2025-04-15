@@ -22,15 +22,15 @@ public class Post {
     private String title;
     private String content;
     private String authorName;
-    private String password;
+    private String userId;
     private LocalDateTime createdAt;
 
-    public static Post of(PostInput postInput, String hashedPassword) {
+    public static Post of(PostInput postInput) {
         return Post.builder()
                 .title(postInput.getTitle())
                 .content(postInput.getContent())
                 .authorName(postInput.getAuthorName())
-                .password(hashedPassword)
+                .userId(postInput.getUserId())
                 .createdAt(LocalDateTime.now())
                 .build();
     }
