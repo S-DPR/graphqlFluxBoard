@@ -49,12 +49,12 @@ public class ReplyResolver {
     }
 
     @BatchMapping(field = "user", typeName = "Reply")
-    public Mono<Map<String, User>> getUsers(List<Reply> replies) {
+    public Mono<Map<Reply, User>> getUsers(List<Reply> replies) {
         List<String> userIds = replies.stream().map(Reply::getUserId).distinct().toList();
         return userService.findAllByIds(userIds)
                 .collectMap(User::getId)
                 .map(user -> {
-                    return replies.stream().collect(Collectors.toMap(Reply::getId, reply -> user.get(reply.getUserId())));
+                    return replies.stream().collect(Collectors.toMap(reply -> reply, reply -> user.get(reply.getUserId())));
                 });
     }
 }
