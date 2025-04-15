@@ -1,6 +1,7 @@
 type Reply {
     id: ID!
     commentId: ID!
+    user: User
     content: String
     createdAt: String
 }

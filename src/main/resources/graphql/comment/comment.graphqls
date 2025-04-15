@@ -1,7 +1,7 @@
 type Comment {
     id: ID!
     postId: ID!
-    userId: ID!
+    user: User
     comment: String
     replies: [Reply!]
     createdAt: String
