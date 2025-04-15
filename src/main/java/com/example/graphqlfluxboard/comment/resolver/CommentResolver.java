@@ -5,12 +5,11 @@ import com.example.graphqlfluxboard.comment.dto.CommentInput;
 import com.example.graphqlfluxboard.comment.service.CommentService;
 import com.example.graphqlfluxboard.reply.domain.Reply;
 import com.example.graphqlfluxboard.reply.sevice.ReplyService;
+import com.example.graphqlfluxboard.user.domain.User;
+import com.example.graphqlfluxboard.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.graphql.data.method.annotation.Argument;
-import org.springframework.graphql.data.method.annotation.BatchMapping;
-import org.springframework.graphql.data.method.annotation.MutationMapping;
-import org.springframework.graphql.data.method.annotation.QueryMapping;
+import org.springframework.graphql.data.method.annotation.*;
 import org.springframework.stereotype.Controller;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -25,6 +24,7 @@ import java.util.Map;
 public class CommentResolver {
     private final CommentService commentService;
     private final ReplyService replyService;
+    private final UserService userService;
 
     @QueryMapping
     public Flux<Comment> comments() {
@@ -61,5 +61,10 @@ public class CommentResolver {
     @MutationMapping
     public Mono<Boolean> deleteComment(@Argument String commentId, @Argument String password) {
         return commentService.deleteById(commentId, password).thenReturn(true);
+    }
+
+    @SchemaMapping(field = "user", typeName = "Comment")
+    public Mono<User> getUser(String userId) {
+        return userService.findById(userId);
     }
 }
