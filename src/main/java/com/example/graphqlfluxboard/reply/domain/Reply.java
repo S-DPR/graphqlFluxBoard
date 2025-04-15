@@ -21,15 +21,15 @@ public class Reply {
 
     private String commentId;
     private String authorName;
-    private String password;
+    private String userId;
     private String content;
     private LocalDateTime createdAt;
 
-    public static Reply of(ReplyInput replyInput, String password) {
+    public static Reply of(ReplyInput replyInput) {
         return Reply.builder()
                 .authorName(replyInput.getAuthorName())
                 .commentId(replyInput.getCommentId())
-                .password(password)
+                .userId(replyInput.getUserId())
                 .content(replyInput.getContent())
                 .createdAt(LocalDateTime.now())
                 .build();

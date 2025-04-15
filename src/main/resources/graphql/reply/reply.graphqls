@@ -8,6 +8,7 @@ type Reply {
 
 input ReplyInput {
     commentId: ID!
+    userId: ID!
     authorName: String
     password: String
     content: String

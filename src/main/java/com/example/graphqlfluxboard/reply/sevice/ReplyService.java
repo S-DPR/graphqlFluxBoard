@@ -3,6 +3,7 @@ package com.example.graphqlfluxboard.reply.sevice;
 import com.example.graphqlfluxboard.reply.domain.Reply;
 import com.example.graphqlfluxboard.reply.dto.ReplyInput;
 import com.example.graphqlfluxboard.reply.repos.ReplyRepository;
+import com.example.graphqlfluxboard.user.service.UserService;
 import com.example.graphqlfluxboard.utils.PasswordService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,6 +18,7 @@ import java.util.List;
 @Slf4j
 public class ReplyService {
     private final ReplyRepository replyRepository;
+    private final UserService userService;
     private final PasswordService passwordService;
 
     public Flux<Reply> replies() {
@@ -36,21 +38,17 @@ public class ReplyService {
     }
 
     public Mono<Reply> saveReply(ReplyInput replyInput) {
-        String password = passwordService.encryptPassword(replyInput.getPassword());
-        return saveReply(Reply.of(replyInput, password));
+        return userService.verify(replyInput.getUserId(), replyInput.getPassword())
+                .then(saveReply(Reply.of(replyInput)));
     }
 
     public Mono<Void> deleteReply(String replyId) {
         return replyRepository.deleteById(replyId);
     }
 
-    public Mono<Void> deleteById(String id, String password) {
-        return reply(id)
-                .flatMap(reply -> {
-                    if (passwordService.checkPassword(password, reply.getPassword())) {
-                        return deleteReply(id);
-                    }
-                    return Mono.error(new RuntimeException("Invalid password"));
-                });
+    public Mono<Void> deleteById(String replyId, String password) {
+        return reply(replyId)
+                .flatMap(reply -> userService.verify(reply.getUserId(), password))
+                .then(deleteReply(replyId));
     }
 }

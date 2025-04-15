@@ -1,5 +1,6 @@
 package com.example.graphqlfluxboard.user.service;
 
+import com.example.graphqlfluxboard.reply.domain.Reply;
 import com.example.graphqlfluxboard.user.domain.User;
 import com.example.graphqlfluxboard.user.dto.UserInput;
 import com.example.graphqlfluxboard.user.repos.UserRepository;
@@ -34,5 +35,12 @@ public class UserService {
 
     public Mono<Void> deleteById(String id) {
         return userRepository.deleteById(id);
+    }
+
+    public Mono<Void> verify(String userId, String password) {
+        return findById(userId)
+                .filter(user -> passwordService.checkPassword(password, user.getPassword()))
+                .switchIfEmpty(Mono.error(new RuntimeException("Invalid password")))
+                .then();
     }
 }

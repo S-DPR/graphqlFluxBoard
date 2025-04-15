@@ -8,8 +8,10 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 public class ReplyInput {
+    private String id;
     private String commentId;
     private String authorName;
+    private String userId;
     private String password;
     private String content;
 }
