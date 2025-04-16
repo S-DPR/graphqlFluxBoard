@@ -1,6 +1,7 @@
 package com.example.graphqlfluxboard.comment.service;
 
 import com.example.graphqlfluxboard.comment.domain.Comment;
+import com.example.graphqlfluxboard.comment.dto.DeleteCommentInput;
 import com.example.graphqlfluxboard.comment.dto.SaveCommentInput;
 import com.example.graphqlfluxboard.comment.repos.CommentRepository;
 import com.example.graphqlfluxboard.common.exception.NotFound;
@@ -55,7 +56,10 @@ public class CommentService {
         return commentRepository.deleteById(id);
     }
 
-    public Mono<Void> deleteById(String id, String password) {
+    public Mono<Void> deleteById(DeleteCommentInput deleteCommentInput) {
+        String id = deleteCommentInput.getCommentId();
+        String password = deleteCommentInput.getPassword();
+
         return getComment(id)
                 .flatMap(comment -> userService.verify(comment.getUserId(), password))
                 .then(deleteComment(id));

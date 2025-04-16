@@ -1,12 +1,15 @@
 package com.example.graphqlfluxboard.comment.resolver;
 
 import com.example.graphqlfluxboard.comment.domain.Comment;
+import com.example.graphqlfluxboard.comment.dto.DeleteCommentInput;
 import com.example.graphqlfluxboard.comment.dto.SaveCommentInput;
 import com.example.graphqlfluxboard.comment.service.CommentService;
 import com.example.graphqlfluxboard.reply.domain.Reply;
 import com.example.graphqlfluxboard.reply.sevice.ReplyService;
 import com.example.graphqlfluxboard.user.domain.User;
 import com.example.graphqlfluxboard.user.service.UserService;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.graphql.data.method.annotation.*;
@@ -55,13 +58,13 @@ public class CommentResolver {
     }
 
     @MutationMapping
-    public Mono<Comment> createComment(@Argument SaveCommentInput saveCommentInput) {
+    public Mono<Comment> createComment(@Valid @Argument SaveCommentInput saveCommentInput) {
         return commentService.saveComment(saveCommentInput);
     }
 
     @MutationMapping
-    public Mono<Boolean> deleteComment(@Argument String commentId, @Argument String password) {
-        return commentService.deleteById(commentId, password).thenReturn(true);
+    public Mono<Boolean> deleteComment(@Valid @Argument DeleteCommentInput deleteCommentInput) {
+        return commentService.deleteById(deleteCommentInput).thenReturn(true);
     }
 
     @BatchMapping(field = "user", typeName = "Comment")

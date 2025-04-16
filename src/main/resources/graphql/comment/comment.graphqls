@@ -13,3 +13,9 @@ input SaveCommentInput {
     password: String!
     comment: String!
 }
+
+input DeleteCommentInput {
+    commentId: ID!
+    password: String!
+}
+

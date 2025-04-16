@@ -18,7 +18,7 @@ type Mutation {
     deletePost(postId: ID!, password: String!): Boolean
 
     createComment(saveCommentInput: SaveCommentInput!): Comment
-    deleteComment(commentId: ID!, password: String!): Boolean
+    deleteComment(deleteCommentInput: DeleteCommentInput!): Boolean
 
     createReply(saveReplyInput: SaveReplyInput!): Reply
     deleteReply(replyId: ID!, password: String!): Boolean
