@@ -45,6 +45,16 @@ public class CommentResolver {
         return commentService.getCommentByPostId(postId);
     }
 
+    @MutationMapping
+    public Mono<Comment> createComment(@Valid @Argument SaveCommentInput saveCommentInput) {
+        return commentService.saveComment(saveCommentInput);
+    }
+
+    @MutationMapping
+    public Mono<Boolean> deleteComment(@Valid @Argument DeleteCommentInput deleteCommentInput) {
+        return commentService.deleteById(deleteCommentInput).thenReturn(true);
+    }
+
     @BatchMapping(field = "replies", typeName = "Comment")
     public Mono<Map<Comment, List<Reply>>> commentsWithReplies(List<Comment> comments) {
         Map<String, Comment> commentMap = comments.stream().collect(Collectors.toMap(Comment::getId, c -> c));
@@ -55,16 +65,6 @@ public class CommentResolver {
                         .collectSortedList(Comparator.comparing(Reply::getCreatedAt))
                         .map(list -> Map.entry(commentMap.get(groupedFlux.key()), list)))
                 .collectMap(Map.Entry::getKey, Map.Entry::getValue);
-    }
-
-    @MutationMapping
-    public Mono<Comment> createComment(@Valid @Argument SaveCommentInput saveCommentInput) {
-        return commentService.saveComment(saveCommentInput);
-    }
-
-    @MutationMapping
-    public Mono<Boolean> deleteComment(@Valid @Argument DeleteCommentInput deleteCommentInput) {
-        return commentService.deleteById(deleteCommentInput).thenReturn(true);
     }
 
     @BatchMapping(field = "user", typeName = "Comment")
