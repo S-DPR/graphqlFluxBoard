@@ -43,9 +43,12 @@ public class UserService {
     public Mono<User> save(UserInput userInput) {
         String password = passwordService.encryptPassword(userInput.getPassword());
         return existsByUsername(userInput.getUsername())
-                .filter(condition -> !condition)
-                .switchIfEmpty(Mono.error(new DuplicateException("유저이름 중복이래요~")))
-                .then(save(User.of(userInput, password)));
+                .flatMap(exists -> {
+                    if (exists) {
+                        return Mono.error(new DuplicateException("유저이름 중복이래요~"));
+                    }
+                    return save(User.of(userInput, password));
+                });
     }
 
     public Mono<Void> deleteById(String id) {
@@ -53,13 +56,13 @@ public class UserService {
     }
 
     public Mono<Void> verify(String userId, String password) {
-        return findById(userId)
-                .switchIfEmpty(Mono.error(new AuthException("없는 유저래요~")))
-                .flatMap(user -> {
-                    if (passwordService.checkPassword(password, user.getPassword())) {
-                        return Mono.empty();
-                    }
-                    return Mono.error(new AuthException("비밀번호 에러래요~"));
-                });
+        Mono<User> userMono = findById(userId)
+                .switchIfEmpty(Mono.error(new AuthException("없는 유저래요~")));
+        return userMono.flatMap(user -> {
+            if (!passwordService.checkPassword(password, user.getPassword())) {
+                return Mono.error(new AuthException("비밀번호 에러래요~"));
+            }
+            return Mono.empty();
+        });
     }
 }
