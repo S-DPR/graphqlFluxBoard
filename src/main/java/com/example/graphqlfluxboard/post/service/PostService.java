@@ -1,5 +1,6 @@
 package com.example.graphqlfluxboard.post.service;
 
+import com.example.graphqlfluxboard.common.exception.NotSupport;
 import com.example.graphqlfluxboard.post.domain.Post;
 import com.example.graphqlfluxboard.post.dto.PostFilterInput;
 import com.example.graphqlfluxboard.post.dto.PostInput;
@@ -27,16 +28,16 @@ public class PostService {
     private static final Set<String> ALLOWED_SORT_FIELDS = Set.of("createdAt", "title", "authorName");
     private final PostRepository postRepository;
     private final ReactiveMongoTemplate mongoTemplate;
-    private final PasswordService passwordService;
     private final UserService userService;
 
     public Mono<Post> findById(String postId) {
-        return postRepository.findById(postId);
+        return postRepository.findById(postId)
+                .switchIfEmpty(Mono.error(new NotSupport(postId + ": 이 게시글 못찾았대요~")));
     }
 
     public Flux<Post> findAll(PostFilterInput postFilterInput) {
         if (!ALLOWED_SORT_FIELDS.contains(postFilterInput.getSortField())) {
-            throw new RuntimeException("sort field is not supported");
+            throw new NotSupport("다음 필드는 정렬을 지원하지 않습니다. : " + postFilterInput.getSortField());
         }
 
         List<Criteria> criteria = getCriteria(postFilterInput.getType(), postFilterInput.getKeyword());
@@ -67,6 +68,10 @@ public class PostService {
                     Criteria.where("content").regex(keyword, "i")
             ));
         };
+    }
+
+    public Mono<Boolean> existsById(String postId) {
+        return postRepository.existsById(postId);
     }
 
     public Mono<Post> save(Post post) {

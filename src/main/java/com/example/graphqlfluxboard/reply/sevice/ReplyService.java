@@ -1,5 +1,8 @@
 package com.example.graphqlfluxboard.reply.sevice;
 
+import com.example.graphqlfluxboard.comment.service.CommentService;
+import com.example.graphqlfluxboard.common.exception.NotFound;
+import com.example.graphqlfluxboard.post.service.PostService;
 import com.example.graphqlfluxboard.reply.domain.Reply;
 import com.example.graphqlfluxboard.reply.dto.ReplyInput;
 import com.example.graphqlfluxboard.reply.repos.ReplyRepository;
@@ -19,14 +22,15 @@ import java.util.List;
 public class ReplyService {
     private final ReplyRepository replyRepository;
     private final UserService userService;
-    private final PasswordService passwordService;
+    private final CommentService commentService;
 
     public Flux<Reply> replies() {
         return replyRepository.findAll();
     }
 
     public Mono<Reply> reply(String replyId) {
-        return replyRepository.findById(replyId);
+        return replyRepository.findById(replyId)
+                .switchIfEmpty(Mono.error(new NotFound(replyId + ": 이 Reply 못찾았대요~")));
     }
 
     public Flux<Reply> findAllByCommentIds(List<String> commentIds) {
@@ -39,7 +43,13 @@ public class ReplyService {
 
     public Mono<Reply> saveReply(ReplyInput replyInput) {
         return userService.verify(replyInput.getUserId(), replyInput.getPassword())
-                .then(saveReply(Reply.of(replyInput)));
+                .then(Mono.defer(() -> commentService.existsById(replyInput.getCommentId())))
+                .flatMap(exist -> {
+                    if (exist) {
+                        return saveReply(Reply.of(replyInput));
+                    }
+                    return Mono.error(new NotFound("댓글이 사라졌대요~"));
+                });
     }
 
     public Mono<Void> deleteReply(String replyId) {
