@@ -4,6 +4,7 @@ import com.example.graphqlfluxboard.comment.domain.Comment;
 import com.example.graphqlfluxboard.comment.dto.CommentInput;
 import com.example.graphqlfluxboard.comment.repos.CommentRepository;
 import com.example.graphqlfluxboard.common.exception.NotFound;
+import com.example.graphqlfluxboard.common.exception.enums.Resources;
 import com.example.graphqlfluxboard.post.service.PostService;
 import com.example.graphqlfluxboard.user.service.UserService;
 import com.example.graphqlfluxboard.utils.PasswordService;
@@ -25,7 +26,7 @@ public class CommentService {
 
     public Mono<Comment> getComment(String id) {
         return commentRepository.findById(id)
-                .switchIfEmpty(Mono.error(new NotFound(id + ": 이 Comment 못찾았대요~")));
+                .switchIfEmpty(Mono.error(new NotFound(Resources.REPLY)));
     }
 
     public Flux<Comment> getCommentByPostId(String postId) {
@@ -47,7 +48,7 @@ public class CommentService {
                     if (exist) {
                         return saveComment(Comment.of(commentInput));
                     }
-                    return Mono.error(new NotFound("게시글이 사라졌대요~"));
+                    return Mono.error(new NotFound(Resources.POST));
                 });
     }
 

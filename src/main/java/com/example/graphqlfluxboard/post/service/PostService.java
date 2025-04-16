@@ -1,6 +1,8 @@
 package com.example.graphqlfluxboard.post.service;
 
+import com.example.graphqlfluxboard.common.exception.NotFound;
 import com.example.graphqlfluxboard.common.exception.NotSupport;
+import com.example.graphqlfluxboard.common.exception.enums.Resources;
 import com.example.graphqlfluxboard.post.domain.Post;
 import com.example.graphqlfluxboard.post.dto.PostFilterInput;
 import com.example.graphqlfluxboard.post.dto.PostInput;
@@ -8,7 +10,6 @@ import com.example.graphqlfluxboard.post.enums.FilterType;
 import com.example.graphqlfluxboard.post.enums.SortOrder;
 import com.example.graphqlfluxboard.post.repos.PostRepository;
 import com.example.graphqlfluxboard.user.service.UserService;
-import com.example.graphqlfluxboard.utils.PasswordService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.ReactiveMongoTemplate;
@@ -32,7 +33,7 @@ public class PostService {
 
     public Mono<Post> findById(String postId) {
         return postRepository.findById(postId)
-                .switchIfEmpty(Mono.error(new NotSupport(postId + ": 이 게시글 못찾았대요~")));
+                .switchIfEmpty(Mono.error(new NotFound(Resources.POST)));
     }
 
     public Flux<Post> findAll(PostFilterInput postFilterInput) {

@@ -2,6 +2,7 @@ package com.example.graphqlfluxboard.user.service;
 
 import com.example.graphqlfluxboard.common.exception.AuthException;
 import com.example.graphqlfluxboard.common.exception.DuplicateException;
+import com.example.graphqlfluxboard.common.exception.enums.Resources;
 import com.example.graphqlfluxboard.reply.domain.Reply;
 import com.example.graphqlfluxboard.user.domain.User;
 import com.example.graphqlfluxboard.user.dto.UserInput;
@@ -45,7 +46,7 @@ public class UserService {
         return existsByUsername(userInput.getUsername())
                 .flatMap(exists -> {
                     if (exists) {
-                        return Mono.error(new DuplicateException("유저이름 중복이래요~"));
+                        return Mono.error(new DuplicateException(Resources.USERNAME));
                     }
                     return save(User.of(userInput, password));
                 });

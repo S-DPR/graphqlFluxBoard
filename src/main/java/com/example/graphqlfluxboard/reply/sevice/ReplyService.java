@@ -2,6 +2,7 @@ package com.example.graphqlfluxboard.reply.sevice;
 
 import com.example.graphqlfluxboard.comment.service.CommentService;
 import com.example.graphqlfluxboard.common.exception.NotFound;
+import com.example.graphqlfluxboard.common.exception.enums.Resources;
 import com.example.graphqlfluxboard.post.service.PostService;
 import com.example.graphqlfluxboard.reply.domain.Reply;
 import com.example.graphqlfluxboard.reply.dto.ReplyInput;
@@ -30,7 +31,7 @@ public class ReplyService {
 
     public Mono<Reply> reply(String replyId) {
         return replyRepository.findById(replyId)
-                .switchIfEmpty(Mono.error(new NotFound(replyId + ": 이 Reply 못찾았대요~")));
+                .switchIfEmpty(Mono.error(new NotFound(Resources.REPLY)));
     }
 
     public Flux<Reply> findAllByCommentIds(List<String> commentIds) {
@@ -48,7 +49,7 @@ public class ReplyService {
                     if (exist) {
                         return saveReply(Reply.of(replyInput));
                     }
-                    return Mono.error(new NotFound("댓글이 사라졌대요~"));
+                    return Mono.error(new NotFound(Resources.COMMENT));
                 });
     }
 
