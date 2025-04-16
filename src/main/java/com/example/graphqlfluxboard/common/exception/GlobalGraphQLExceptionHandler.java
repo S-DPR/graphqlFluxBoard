@@ -13,7 +13,9 @@ import java.util.function.Function;
 public class GlobalGraphQLExceptionHandler extends DataFetcherExceptionResolverAdapter {
     private final Map<Class<? extends Throwable>, Function<Throwable, String>> errorMessageHandlers = Map.of(
             AuthException.class, ex -> "인증에러래요~: " + ex.getMessage(),
-            DuplicateException.class, ex -> "중복에러래요~: " + ex.getMessage()
+            DuplicateException.class, ex -> "중복에러래요~: " + ex.getMessage(),
+            NotFound.class, ex -> "못찾음에러래요~: " + ex.getMessage(),
+            NotSupport.class, ex -> "지원안한대요~: " + ex.getMessage()
     );
 
     @Override
