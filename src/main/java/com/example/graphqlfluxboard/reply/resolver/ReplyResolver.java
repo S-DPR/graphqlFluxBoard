@@ -1,7 +1,7 @@
 package com.example.graphqlfluxboard.reply.resolver;
 
 import com.example.graphqlfluxboard.reply.domain.Reply;
-import com.example.graphqlfluxboard.reply.dto.ReplyInput;
+import com.example.graphqlfluxboard.reply.dto.SaveReplyInput;
 import com.example.graphqlfluxboard.reply.sevice.ReplyService;
 import com.example.graphqlfluxboard.user.domain.User;
 import com.example.graphqlfluxboard.user.service.UserService;
@@ -34,8 +34,8 @@ public class ReplyResolver {
     }
 
     @MutationMapping
-    public Mono<Reply> createReply(@Argument ReplyInput replyInput) {
-        return replyService.saveReply(replyInput);
+    public Mono<Reply> createReply(@Argument SaveReplyInput saveReplyInput) {
+        return replyService.saveReply(saveReplyInput);
     }
 
     @MutationMapping

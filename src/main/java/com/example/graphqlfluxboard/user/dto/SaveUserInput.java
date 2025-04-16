@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 @Setter
 @ToString
 @EqualsAndHashCode
-public class UserInput {
+public class SaveUserInput {
     private String username;
     private String password;
 }

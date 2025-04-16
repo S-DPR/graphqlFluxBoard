@@ -1,7 +1,7 @@
 package com.example.graphqlfluxboard.user.resolver;
 
 import com.example.graphqlfluxboard.user.domain.User;
-import com.example.graphqlfluxboard.user.dto.UserInput;
+import com.example.graphqlfluxboard.user.dto.SaveUserInput;
 import com.example.graphqlfluxboard.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -29,8 +29,8 @@ public class UserResolver {
     }
 
     @MutationMapping
-    public Mono<User> createUser(@Argument UserInput userInput) {
-        return userService.save(userInput);
+    public Mono<User> createUser(@Argument SaveUserInput saveUserInput) {
+        return userService.save(saveUserInput);
     }
 
     @MutationMapping

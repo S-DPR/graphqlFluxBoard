@@ -2,7 +2,7 @@ package com.example.graphqlfluxboard.post.resolver;
 
 import com.example.graphqlfluxboard.post.domain.Post;
 import com.example.graphqlfluxboard.post.dto.PostFilterInput;
-import com.example.graphqlfluxboard.post.dto.PostInput;
+import com.example.graphqlfluxboard.post.dto.SavePostInput;
 import com.example.graphqlfluxboard.post.service.PostService;
 import com.example.graphqlfluxboard.user.domain.User;
 import com.example.graphqlfluxboard.user.service.UserService;
@@ -34,8 +34,8 @@ public class PostResolver {
     }
 
     @MutationMapping
-    public Mono<Post> createPost(@Argument PostInput postInput) {
-        return postService.save(postInput);
+    public Mono<Post> createPost(@Argument SavePostInput savePostInput) {
+        return postService.save(savePostInput);
     }
 
     @MutationMapping

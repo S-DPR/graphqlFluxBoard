@@ -14,15 +14,15 @@ type Query {
 }
 
 type Mutation {
-    createPost(postInput: PostInput!): Post
+    createPost(savePostInput: SavePostInput!): Post
     deletePost(postId: ID!, password: String!): Boolean
 
-    createComment(commentInput: CommentInput!): Comment
+    createComment(saveCommentInput: SaveCommentInput!): Comment
     deleteComment(commentId: ID!, password: String!): Boolean
 
-    createReply(replyInput: ReplyInput!): Reply
+    createReply(saveReplyInput: SaveReplyInput!): Reply
     deleteReply(replyId: ID!, password: String!): Boolean
 
-    createUser(userInput: UserInput!): User
+    createUser(saveUserInput: SaveUserInput!): User
     deleteUser(userId: ID!): Boolean
 }

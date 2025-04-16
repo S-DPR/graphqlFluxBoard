@@ -7,9 +7,9 @@ type Comment {
     createdAt: String
 }
 
-input CommentInput {
+input SaveCommentInput {
     postId: ID!
     userId: ID!
-    password: String
-    comment: String
+    password: String!
+    comment: String!
 }

@@ -1,6 +1,6 @@
 package com.example.graphqlfluxboard.reply.domain;
 
-import com.example.graphqlfluxboard.reply.dto.ReplyInput;
+import com.example.graphqlfluxboard.reply.dto.SaveReplyInput;
 import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -24,11 +24,11 @@ public class Reply {
     private String content;
     private LocalDateTime createdAt;
 
-    public static Reply of(ReplyInput replyInput) {
+    public static Reply of(SaveReplyInput saveReplyInput) {
         return Reply.builder()
-                .commentId(replyInput.getCommentId())
-                .userId(replyInput.getUserId())
-                .content(replyInput.getContent())
+                .commentId(saveReplyInput.getCommentId())
+                .userId(saveReplyInput.getUserId())
+                .content(saveReplyInput.getContent())
                 .createdAt(LocalDateTime.now())
                 .build();
     }

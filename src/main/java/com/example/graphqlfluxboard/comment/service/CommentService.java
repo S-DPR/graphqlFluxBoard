@@ -1,13 +1,12 @@
 package com.example.graphqlfluxboard.comment.service;
 
 import com.example.graphqlfluxboard.comment.domain.Comment;
-import com.example.graphqlfluxboard.comment.dto.CommentInput;
+import com.example.graphqlfluxboard.comment.dto.SaveCommentInput;
 import com.example.graphqlfluxboard.comment.repos.CommentRepository;
 import com.example.graphqlfluxboard.common.exception.NotFound;
 import com.example.graphqlfluxboard.common.exception.enums.Resources;
 import com.example.graphqlfluxboard.post.service.PostService;
 import com.example.graphqlfluxboard.user.service.UserService;
-import com.example.graphqlfluxboard.utils.PasswordService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
@@ -41,12 +40,12 @@ public class CommentService {
         return commentRepository.save(comment);
     }
 
-    public Mono<Comment> saveComment(CommentInput commentInput) {
-        return userService.verify(commentInput.getUserId(), commentInput.getPassword())
-                .then(Mono.defer(() -> postService.existsById(commentInput.getPostId())))
+    public Mono<Comment> saveComment(SaveCommentInput saveCommentInput) {
+        return userService.verify(saveCommentInput.getUserId(), saveCommentInput.getPassword())
+                .then(Mono.defer(() -> postService.existsById(saveCommentInput.getPostId())))
                 .flatMap(exist -> {
                     if (exist) {
-                        return saveComment(Comment.of(commentInput));
+                        return saveComment(Comment.of(saveCommentInput));
                     }
                     return Mono.error(new NotFound(Resources.POST));
                 });

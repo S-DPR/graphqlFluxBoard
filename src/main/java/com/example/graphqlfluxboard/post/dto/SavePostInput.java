@@ -9,7 +9,7 @@ import lombok.ToString;
 @Setter
 @ToString
 @EqualsAndHashCode
-public class PostInput {
+public class SavePostInput {
     private String title;
     private String content;
     private String userId;

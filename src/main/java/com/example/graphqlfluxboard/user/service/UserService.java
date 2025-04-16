@@ -3,9 +3,8 @@ package com.example.graphqlfluxboard.user.service;
 import com.example.graphqlfluxboard.common.exception.AuthException;
 import com.example.graphqlfluxboard.common.exception.DuplicateException;
 import com.example.graphqlfluxboard.common.exception.enums.Resources;
-import com.example.graphqlfluxboard.reply.domain.Reply;
 import com.example.graphqlfluxboard.user.domain.User;
-import com.example.graphqlfluxboard.user.dto.UserInput;
+import com.example.graphqlfluxboard.user.dto.SaveUserInput;
 import com.example.graphqlfluxboard.user.repos.UserRepository;
 import com.example.graphqlfluxboard.utils.PasswordService;
 import lombok.RequiredArgsConstructor;
@@ -41,14 +40,14 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    public Mono<User> save(UserInput userInput) {
-        String password = passwordService.encryptPassword(userInput.getPassword());
-        return existsByUsername(userInput.getUsername())
+    public Mono<User> save(SaveUserInput saveUserInput) {
+        String password = passwordService.encryptPassword(saveUserInput.getPassword());
+        return existsByUsername(saveUserInput.getUsername())
                 .flatMap(exists -> {
                     if (exists) {
                         return Mono.error(new DuplicateException(Resources.USERNAME));
                     }
-                    return save(User.of(userInput, password));
+                    return save(User.of(saveUserInput, password));
                 });
     }
 

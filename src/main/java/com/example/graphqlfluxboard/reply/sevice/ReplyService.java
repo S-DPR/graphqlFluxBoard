@@ -3,12 +3,10 @@ package com.example.graphqlfluxboard.reply.sevice;
 import com.example.graphqlfluxboard.comment.service.CommentService;
 import com.example.graphqlfluxboard.common.exception.NotFound;
 import com.example.graphqlfluxboard.common.exception.enums.Resources;
-import com.example.graphqlfluxboard.post.service.PostService;
 import com.example.graphqlfluxboard.reply.domain.Reply;
-import com.example.graphqlfluxboard.reply.dto.ReplyInput;
+import com.example.graphqlfluxboard.reply.dto.SaveReplyInput;
 import com.example.graphqlfluxboard.reply.repos.ReplyRepository;
 import com.example.graphqlfluxboard.user.service.UserService;
-import com.example.graphqlfluxboard.utils.PasswordService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -42,12 +40,12 @@ public class ReplyService {
         return replyRepository.save(reply);
     }
 
-    public Mono<Reply> saveReply(ReplyInput replyInput) {
-        return userService.verify(replyInput.getUserId(), replyInput.getPassword())
-                .then(Mono.defer(() -> commentService.existsById(replyInput.getCommentId())))
+    public Mono<Reply> saveReply(SaveReplyInput saveReplyInput) {
+        return userService.verify(saveReplyInput.getUserId(), saveReplyInput.getPassword())
+                .then(Mono.defer(() -> commentService.existsById(saveReplyInput.getCommentId())))
                 .flatMap(exist -> {
                     if (exist) {
-                        return saveReply(Reply.of(replyInput));
+                        return saveReply(Reply.of(saveReplyInput));
                     }
                     return Mono.error(new NotFound(Resources.COMMENT));
                 });

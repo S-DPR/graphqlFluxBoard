@@ -7,7 +7,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ReplyInput {
+public class SaveReplyInput {
     private String id;
     private String commentId;
     private String userId;

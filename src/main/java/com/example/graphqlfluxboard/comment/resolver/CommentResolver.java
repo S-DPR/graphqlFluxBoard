@@ -1,7 +1,7 @@
 package com.example.graphqlfluxboard.comment.resolver;
 
 import com.example.graphqlfluxboard.comment.domain.Comment;
-import com.example.graphqlfluxboard.comment.dto.CommentInput;
+import com.example.graphqlfluxboard.comment.dto.SaveCommentInput;
 import com.example.graphqlfluxboard.comment.service.CommentService;
 import com.example.graphqlfluxboard.reply.domain.Reply;
 import com.example.graphqlfluxboard.reply.sevice.ReplyService;
@@ -55,8 +55,8 @@ public class CommentResolver {
     }
 
     @MutationMapping
-    public Mono<Comment> createComment(@Argument CommentInput commentInput) {
-        return commentService.saveComment(commentInput);
+    public Mono<Comment> createComment(@Argument SaveCommentInput saveCommentInput) {
+        return commentService.saveComment(saveCommentInput);
     }
 
     @MutationMapping

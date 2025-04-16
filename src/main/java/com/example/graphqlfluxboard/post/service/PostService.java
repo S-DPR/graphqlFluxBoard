@@ -5,7 +5,7 @@ import com.example.graphqlfluxboard.common.exception.NotSupport;
 import com.example.graphqlfluxboard.common.exception.enums.Resources;
 import com.example.graphqlfluxboard.post.domain.Post;
 import com.example.graphqlfluxboard.post.dto.PostFilterInput;
-import com.example.graphqlfluxboard.post.dto.PostInput;
+import com.example.graphqlfluxboard.post.dto.SavePostInput;
 import com.example.graphqlfluxboard.post.enums.FilterType;
 import com.example.graphqlfluxboard.post.enums.SortOrder;
 import com.example.graphqlfluxboard.post.repos.PostRepository;
@@ -79,9 +79,9 @@ public class PostService {
         return postRepository.save(post);
     }
 
-    public Mono<Post> save(PostInput postInput) {
-        return userService.verify(postInput.getUserId(), postInput.getPassword())
-                .then(save(Post.of(postInput)));
+    public Mono<Post> save(SavePostInput savePostInput) {
+        return userService.verify(savePostInput.getUserId(), savePostInput.getPassword())
+                .then(save(Post.of(savePostInput)));
     }
 
     public Mono<Void> deleteById(String id) {

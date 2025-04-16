@@ -6,7 +6,7 @@ type Reply {
     createdAt: String
 }
 
-input ReplyInput {
+input SaveReplyInput {
     commentId: ID!
     userId: ID!
     password: String

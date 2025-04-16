@@ -1,6 +1,6 @@
 package com.example.graphqlfluxboard.post.domain;
 
-import com.example.graphqlfluxboard.post.dto.PostInput;
+import com.example.graphqlfluxboard.post.dto.SavePostInput;
 import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -24,11 +24,11 @@ public class Post {
     private String userId;
     private LocalDateTime createdAt;
 
-    public static Post of(PostInput postInput) {
+    public static Post of(SavePostInput savePostInput) {
         return Post.builder()
-                .title(postInput.getTitle())
-                .content(postInput.getContent())
-                .userId(postInput.getUserId())
+                .title(savePostInput.getTitle())
+                .content(savePostInput.getContent())
+                .userId(savePostInput.getUserId())
                 .createdAt(LocalDateTime.now())
                 .build();
     }

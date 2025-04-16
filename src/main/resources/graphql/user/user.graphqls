@@ -3,7 +3,7 @@ type User {
     username: String!
 }
 
-input UserInput {
+input SaveUserInput {
     username: String!
     password: String!
 }

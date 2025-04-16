@@ -1,6 +1,6 @@
 package com.example.graphqlfluxboard.user.domain;
 
-import com.example.graphqlfluxboard.user.dto.UserInput;
+import com.example.graphqlfluxboard.user.dto.SaveUserInput;
 import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -19,9 +19,9 @@ public class User {
     private String username;
     private String password;
 
-    public static User of(UserInput userInput, String password) {
+    public static User of(SaveUserInput saveUserInput, String password) {
         return User.builder()
-                .username(userInput.getUsername())
+                .username(saveUserInput.getUsername())
                 .password(password)
                 .build();
     }

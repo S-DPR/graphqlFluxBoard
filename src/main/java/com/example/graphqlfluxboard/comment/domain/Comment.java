@@ -1,6 +1,6 @@
 package com.example.graphqlfluxboard.comment.domain;
 
-import com.example.graphqlfluxboard.comment.dto.CommentInput;
+import com.example.graphqlfluxboard.comment.dto.SaveCommentInput;
 import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -24,11 +24,11 @@ public class Comment {
     private String comment;
     private LocalDateTime createdAt;
 
-    public static Comment of(CommentInput commentInput) {
+    public static Comment of(SaveCommentInput saveCommentInput) {
         return Comment.builder()
-                .comment(commentInput.getComment())
-                .userId(commentInput.getUserId())
-                .postId(commentInput.getPostId())
+                .comment(saveCommentInput.getComment())
+                .userId(saveCommentInput.getUserId())
+                .postId(saveCommentInput.getPostId())
                 .createdAt(LocalDateTime.now())
                 .build();
     }

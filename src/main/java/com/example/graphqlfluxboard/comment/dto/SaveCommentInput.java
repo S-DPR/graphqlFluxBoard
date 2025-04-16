@@ -9,7 +9,7 @@ import lombok.*;
 @Builder
 @ToString
 @EqualsAndHashCode
-public class CommentInput {
+public class SaveCommentInput {
     private String postId;
     private String userId;
     private String password;
