@@ -14,12 +14,12 @@ input SavePostInput {
 }
 
 input PostFilterInput {
-    type: FilterType
-    keyword: String
-    page: Int
-    sizePerPage: Int
-    sortField: String
-    sortOrder: SortOrder
+    type: FilterType = NONE
+    keyword: String = ""
+    page: Int = 1
+    sizePerPage: Int = 5
+    sortField: String = "createdAt"
+    sortOrder: SortOrder = DESC
 }
 
 input DeletePostInput {
