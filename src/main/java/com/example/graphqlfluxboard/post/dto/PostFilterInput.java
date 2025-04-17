@@ -33,7 +33,7 @@ public class PostFilterInput {
 
     @Builder.Default
     @NotNull(message = DTOValidationMessage.POST_SORT_FIELD_ERROR)
-    private String sortField = "createAt";
+    private String sortField = "createdAt";
 
     @Builder.Default
     @NotNull(message = DTOValidationMessage.SORT_ORDER_ERROR)
