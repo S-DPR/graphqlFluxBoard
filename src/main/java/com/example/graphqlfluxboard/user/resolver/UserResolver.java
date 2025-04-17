@@ -1,8 +1,10 @@
 package com.example.graphqlfluxboard.user.resolver;
 
 import com.example.graphqlfluxboard.user.domain.User;
+import com.example.graphqlfluxboard.user.dto.DeleteUserInput;
 import com.example.graphqlfluxboard.user.dto.SaveUserInput;
 import com.example.graphqlfluxboard.user.service.UserService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.graphql.data.method.annotation.Argument;
@@ -29,12 +31,12 @@ public class UserResolver {
     }
 
     @MutationMapping
-    public Mono<User> createUser(@Argument SaveUserInput saveUserInput) {
+    public Mono<User> createUser(@Valid @Argument SaveUserInput saveUserInput) {
         return userService.save(saveUserInput);
     }
 
     @MutationMapping
-    public Mono<Boolean> deleteUser(@Argument String userId) {
-        return userService.deleteById(userId).thenReturn(true);
+    public Mono<Boolean> deleteUser(@Valid @Argument DeleteUserInput deleteUserInput) {
+        return userService.deleteById(deleteUserInput).thenReturn(true);
     }
 }

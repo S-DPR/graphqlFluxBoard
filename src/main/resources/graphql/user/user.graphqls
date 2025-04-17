@@ -7,3 +7,9 @@ input SaveUserInput {
     username: String!
     password: String!
 }
+
+input DeleteUserInput {
+    userId: ID!
+    password: String!
+}
+

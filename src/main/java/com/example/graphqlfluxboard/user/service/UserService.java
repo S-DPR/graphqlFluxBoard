@@ -4,9 +4,10 @@ import com.example.graphqlfluxboard.common.exception.AuthException;
 import com.example.graphqlfluxboard.common.exception.DuplicateException;
 import com.example.graphqlfluxboard.common.exception.enums.Resources;
 import com.example.graphqlfluxboard.user.domain.User;
+import com.example.graphqlfluxboard.user.dto.DeleteUserInput;
 import com.example.graphqlfluxboard.user.dto.SaveUserInput;
 import com.example.graphqlfluxboard.user.repos.UserRepository;
-import com.example.graphqlfluxboard.utils.PasswordService;
+import com.example.graphqlfluxboard.common.validation.PasswordService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
@@ -51,8 +52,16 @@ public class UserService {
                 });
     }
 
-    public Mono<Void> deleteById(String id) {
+    public Mono<Void> deleteUser(String id) {
         return userRepository.deleteById(id);
+    }
+
+    public Mono<Void> deleteById(DeleteUserInput deleteUserInput) {
+        String id = deleteUserInput.getUserId();
+        String password = deleteUserInput.getPassword();
+        return findById(id)
+                .flatMap(user -> verify(user.getId(), password))
+                .then(deleteUser(id));
     }
 
     public Mono<Void> verify(String userId, String password) {

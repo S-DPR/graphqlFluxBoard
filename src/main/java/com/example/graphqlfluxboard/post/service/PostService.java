@@ -4,6 +4,7 @@ import com.example.graphqlfluxboard.common.exception.NotFound;
 import com.example.graphqlfluxboard.common.exception.NotSupport;
 import com.example.graphqlfluxboard.common.exception.enums.Resources;
 import com.example.graphqlfluxboard.post.domain.Post;
+import com.example.graphqlfluxboard.post.dto.DeletePostInput;
 import com.example.graphqlfluxboard.post.dto.PostFilterInput;
 import com.example.graphqlfluxboard.post.dto.SavePostInput;
 import com.example.graphqlfluxboard.post.enums.FilterType;
@@ -88,7 +89,9 @@ public class PostService {
         return postRepository.deleteById(id);
     }
 
-    public Mono<Void> deleteById(String id, String password) {
+    public Mono<Void> deleteById(DeletePostInput deletePostInput) {
+        String id = deletePostInput.getPostId();
+        String password = deletePostInput.getPassword();
         return findById(id)
                 .flatMap(post -> userService.verify(post.getUserId(), password))
                 .then(deleteById(id));

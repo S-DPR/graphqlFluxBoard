@@ -4,6 +4,7 @@ import com.example.graphqlfluxboard.comment.service.CommentService;
 import com.example.graphqlfluxboard.common.exception.NotFound;
 import com.example.graphqlfluxboard.common.exception.enums.Resources;
 import com.example.graphqlfluxboard.reply.domain.Reply;
+import com.example.graphqlfluxboard.reply.dto.DeleteReplyInput;
 import com.example.graphqlfluxboard.reply.dto.SaveReplyInput;
 import com.example.graphqlfluxboard.reply.repos.ReplyRepository;
 import com.example.graphqlfluxboard.user.service.UserService;
@@ -55,7 +56,9 @@ public class ReplyService {
         return replyRepository.deleteById(replyId);
     }
 
-    public Mono<Void> deleteById(String replyId, String password) {
+    public Mono<Void> deleteById(DeleteReplyInput deleteReplyInput) {
+        String replyId = deleteReplyInput.getReplyId();
+        String password = deleteReplyInput.getPassword();
         return reply(replyId)
                 .flatMap(reply -> userService.verify(reply.getUserId(), password))
                 .then(deleteReply(replyId));

@@ -1,11 +1,13 @@
 package com.example.graphqlfluxboard.post.resolver;
 
 import com.example.graphqlfluxboard.post.domain.Post;
+import com.example.graphqlfluxboard.post.dto.DeletePostInput;
 import com.example.graphqlfluxboard.post.dto.PostFilterInput;
 import com.example.graphqlfluxboard.post.dto.SavePostInput;
 import com.example.graphqlfluxboard.post.service.PostService;
 import com.example.graphqlfluxboard.user.domain.User;
 import com.example.graphqlfluxboard.user.service.UserService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.graphql.data.method.annotation.Argument;
@@ -34,13 +36,13 @@ public class PostResolver {
     }
 
     @MutationMapping
-    public Mono<Post> createPost(@Argument SavePostInput savePostInput) {
+    public Mono<Post> createPost(@Valid @Argument SavePostInput savePostInput) {
         return postService.save(savePostInput);
     }
 
     @MutationMapping
-    public Mono<Boolean> deletePost(@Argument String postId, @Argument String password) {
-        return postService.deleteById(postId, password).thenReturn(true);
+    public Mono<Boolean> deletePost(@Valid @Argument DeletePostInput deletePostInput) {
+        return postService.deleteById(deletePostInput).thenReturn(true);
     }
 
     @SchemaMapping(field = "user", typeName = "Post")

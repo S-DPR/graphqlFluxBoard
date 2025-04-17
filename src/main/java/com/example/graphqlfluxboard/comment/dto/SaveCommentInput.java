@@ -1,5 +1,6 @@
 package com.example.graphqlfluxboard.comment.dto;
 
+import com.example.graphqlfluxboard.common.validation.DTOValidationMessage;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.*;
@@ -12,15 +13,15 @@ import lombok.*;
 @ToString
 @EqualsAndHashCode
 public class SaveCommentInput {
-    @NotBlank(message = "PostID는 필수입니다.")
+    @NotBlank(message = DTOValidationMessage.NOT_BLANK_POST_ID)
     private String postId;
 
-    @NotBlank(message = "UserID는 필수입니다.")
+    @NotBlank(message = DTOValidationMessage.NOT_BLANK_USER_ID)
     private String userId;
 
-    @NotBlank(message = "Password는 필수입니다.")
+    @NotBlank(message = DTOValidationMessage.NOT_BLANK_PASSWORD)
     private String password;
 
-    @Size(min = 1, max = 1000, message = "Comment는 1자 이상 1000자 이하로 작성해야 합니다.")
+    @Size(min = 1, max = 1000, message = DTOValidationMessage.COMMENT_SIZE_LIMIT)
     private String comment;
 }

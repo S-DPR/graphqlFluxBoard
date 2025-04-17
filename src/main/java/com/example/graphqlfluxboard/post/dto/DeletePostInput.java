@@ -1,4 +1,4 @@
-package com.example.graphqlfluxboard.comment.dto;
+package com.example.graphqlfluxboard.post.dto;
 
 import com.example.graphqlfluxboard.common.validation.DTOValidationMessage;
 import jakarta.validation.constraints.NotBlank;
@@ -11,9 +11,9 @@ import lombok.*;
 @Builder
 @ToString
 @EqualsAndHashCode
-public class DeleteCommentInput {
-    @NotBlank(message = DTOValidationMessage.NOT_BLANK_COMMENT_ID)
-    String commentId;
+public class DeletePostInput {
+    @NotBlank(message = DTOValidationMessage.NOT_BLANK_POST_ID)
+    String postId;
 
     @NotBlank(message = DTOValidationMessage.NOT_BLANK_PASSWORD)
     String password;

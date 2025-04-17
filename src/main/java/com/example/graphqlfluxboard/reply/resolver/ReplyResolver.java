@@ -1,10 +1,12 @@
 package com.example.graphqlfluxboard.reply.resolver;
 
 import com.example.graphqlfluxboard.reply.domain.Reply;
+import com.example.graphqlfluxboard.reply.dto.DeleteReplyInput;
 import com.example.graphqlfluxboard.reply.dto.SaveReplyInput;
 import com.example.graphqlfluxboard.reply.sevice.ReplyService;
 import com.example.graphqlfluxboard.user.domain.User;
 import com.example.graphqlfluxboard.user.service.UserService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.graphql.data.method.annotation.*;
@@ -34,13 +36,13 @@ public class ReplyResolver {
     }
 
     @MutationMapping
-    public Mono<Reply> createReply(@Argument SaveReplyInput saveReplyInput) {
+    public Mono<Reply> createReply(@Valid @Argument SaveReplyInput saveReplyInput) {
         return replyService.saveReply(saveReplyInput);
     }
 
     @MutationMapping
-    public Mono<Boolean> deleteReply(@Argument String replyId, @Argument String password) {
-        return replyService.deleteById(replyId, password).thenReturn(true);
+    public Mono<Boolean> deleteReply(@Valid @Argument DeleteReplyInput deleteReplyInput) {
+        return replyService.deleteById(deleteReplyInput).thenReturn(true);
     }
 
     @BatchMapping(field = "user", typeName = "Reply")

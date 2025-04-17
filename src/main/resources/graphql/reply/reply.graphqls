@@ -12,3 +12,8 @@ input SaveReplyInput {
     password: String
     content: String
 }
+
+input DeleteReplyInput {
+    replyId: ID!
+    password: String!
+}

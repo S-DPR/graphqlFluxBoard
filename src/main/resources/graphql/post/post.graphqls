@@ -22,6 +22,11 @@ input PostFilterInput {
     sortOrder: SortOrder
 }
 
+input DeletePostInput {
+    postId: ID!
+    password: String!
+}
+
 enum FilterType {
     NONE
     AUTHOR
