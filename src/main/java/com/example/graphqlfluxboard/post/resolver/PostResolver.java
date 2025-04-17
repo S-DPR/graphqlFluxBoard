@@ -10,13 +10,15 @@ import com.example.graphqlfluxboard.user.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.graphql.data.method.annotation.Argument;
-import org.springframework.graphql.data.method.annotation.MutationMapping;
-import org.springframework.graphql.data.method.annotation.QueryMapping;
-import org.springframework.graphql.data.method.annotation.SchemaMapping;
+import org.springframework.graphql.data.method.annotation.*;
 import org.springframework.stereotype.Controller;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Controller
@@ -45,8 +47,11 @@ public class PostResolver {
         return postService.deleteById(deletePostInput).thenReturn(true);
     }
 
-    @SchemaMapping(field = "user", typeName = "Post")
-    public Mono<User> getUser(Post post) {
-        return userService.findById(post.getUserId());
+    @BatchMapping(field = "user", typeName = "Post")
+    public Mono<Map<Post, User>> getUsers(List<Post> posts) {
+        List<String> userIds = posts.stream().map(Post::getUserId).distinct().toList();
+        return userService.findAllByIds(userIds)
+                .collectMap(User::getId)
+                .map(userMap -> posts.stream().collect(Collectors.toMap(post -> post, post -> userMap.get(post.getUserId()))));
     }
 }
