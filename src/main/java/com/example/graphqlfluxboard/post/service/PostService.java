@@ -44,7 +44,7 @@ public class PostService {
 
         List<Criteria> criteria = getCriteria(postFilterInput.getType(), postFilterInput.getKeyword());
         Query query = new Query(new Criteria().andOperator(criteria));
-        query.skip((long) postFilterInput.getPage() * postFilterInput.getSizePerPage());
+        query.skip((long) (postFilterInput.getPage()-1) * postFilterInput.getSizePerPage());
         query.limit(postFilterInput.getSizePerPage());
 
         Sort.Direction direction = Sort.Direction.DESC;
