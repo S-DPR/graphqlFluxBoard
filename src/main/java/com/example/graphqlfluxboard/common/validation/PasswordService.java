@@ -1,4 +1,4 @@
-package com.example.graphqlfluxboard.utils;
+package com.example.graphqlfluxboard.common.validation;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
