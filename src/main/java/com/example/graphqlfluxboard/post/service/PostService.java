@@ -1,7 +1,7 @@
 package com.example.graphqlfluxboard.post.service;
 
-import com.example.graphqlfluxboard.common.exception.NotFound;
-import com.example.graphqlfluxboard.common.exception.NotSupport;
+import com.example.graphqlfluxboard.common.exception.impl.NotFound;
+import com.example.graphqlfluxboard.common.exception.impl.NotSupport;
 import com.example.graphqlfluxboard.common.exception.enums.Resources;
 import com.example.graphqlfluxboard.post.domain.Post;
 import com.example.graphqlfluxboard.post.dto.DeletePostInput;

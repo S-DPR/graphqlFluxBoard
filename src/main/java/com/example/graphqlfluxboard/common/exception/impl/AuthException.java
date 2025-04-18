@@ -1,5 +1,6 @@
-package com.example.graphqlfluxboard.common.exception;
+package com.example.graphqlfluxboard.common.exception.impl;
 
+import com.example.graphqlfluxboard.common.exception.ApplicationError;
 import com.example.graphqlfluxboard.common.exception.enums.ErrorCode;
 
 public class AuthException extends ApplicationError {

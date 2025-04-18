@@ -1,7 +1,7 @@
 package com.example.graphqlfluxboard.user.service;
 
-import com.example.graphqlfluxboard.common.exception.AuthException;
-import com.example.graphqlfluxboard.common.exception.DuplicateException;
+import com.example.graphqlfluxboard.common.exception.impl.AuthException;
+import com.example.graphqlfluxboard.common.exception.impl.DuplicateException;
 import com.example.graphqlfluxboard.common.exception.enums.Resources;
 import com.example.graphqlfluxboard.user.domain.User;
 import com.example.graphqlfluxboard.user.dto.DeleteUserInput;

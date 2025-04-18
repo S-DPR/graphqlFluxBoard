@@ -4,7 +4,7 @@ import com.example.graphqlfluxboard.comment.domain.Comment;
 import com.example.graphqlfluxboard.comment.dto.DeleteCommentInput;
 import com.example.graphqlfluxboard.comment.dto.SaveCommentInput;
 import com.example.graphqlfluxboard.comment.repos.CommentRepository;
-import com.example.graphqlfluxboard.common.exception.NotFound;
+import com.example.graphqlfluxboard.common.exception.impl.NotFound;
 import com.example.graphqlfluxboard.common.exception.enums.Resources;
 import com.example.graphqlfluxboard.post.service.PostService;
 import com.example.graphqlfluxboard.user.service.UserService;

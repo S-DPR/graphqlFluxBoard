@@ -1,7 +1,7 @@
 package com.example.graphqlfluxboard.reply.sevice;
 
 import com.example.graphqlfluxboard.comment.service.CommentService;
-import com.example.graphqlfluxboard.common.exception.NotFound;
+import com.example.graphqlfluxboard.common.exception.impl.NotFound;
 import com.example.graphqlfluxboard.common.exception.enums.Resources;
 import com.example.graphqlfluxboard.reply.domain.Reply;
 import com.example.graphqlfluxboard.reply.dto.DeleteReplyInput;
@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import javax.swing.plaf.PanelUI;
 import java.util.List;
 
 @Service
