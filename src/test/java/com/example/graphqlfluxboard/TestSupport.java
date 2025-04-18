@@ -56,7 +56,7 @@ public abstract class TestSupport {
         SaveUserInput userInput = new SaveUserInput();
         userInput.setUsername(username);
         userInput.setPassword(pw);
-        User user = userService.save(userInput).block();
+        User user = userService.createUser(userInput).block();
 
         notNullTest("User", user);
         equalTest("User", "username", username, user.getUsername());
@@ -69,7 +69,7 @@ public abstract class TestSupport {
         postInput.setContent(content);
         postInput.setPassword(pw);
         postInput.setUserId(userId);
-        Post post = postService.save(postInput).block();
+        Post post = postService.createPost(postInput).block();
 
         notNullTest("Post", post);
         equalTest("Post", "title", title, post.getTitle());
@@ -99,7 +99,7 @@ public abstract class TestSupport {
         replyInput.setContent(content);
         replyInput.setUserId(userId);
         replyInput.setPassword(pw);
-        Reply reply = replyService.saveReply(replyInput).block();
+        Reply reply = replyService.createReply(replyInput).block();
 
         notNullTest("Reply", reply);
         equalTest("Reply", "commentId", commentId, reply.getCommentId());

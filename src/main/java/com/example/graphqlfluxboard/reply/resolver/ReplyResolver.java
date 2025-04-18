@@ -37,12 +37,12 @@ public class ReplyResolver {
 
     @MutationMapping
     public Mono<Reply> createReply(@Valid @Argument SaveReplyInput saveReplyInput) {
-        return replyService.saveReply(saveReplyInput);
+        return replyService.createReply(saveReplyInput);
     }
 
     @MutationMapping
     public Mono<Boolean> deleteReply(@Valid @Argument DeleteReplyInput deleteReplyInput) {
-        return replyService.deleteById(deleteReplyInput).thenReturn(true);
+        return replyService.deleteReply(deleteReplyInput).thenReturn(true);
     }
 
     @BatchMapping(field = "user", typeName = "Reply")

@@ -32,12 +32,12 @@ public class PostController {
     @PostMapping("/")
     public Mono<Post> save(@RequestBody Post post) {
         post.setCreatedAt(Instant.now());
-        return postService.save(post);
+        return postService.createPost(post);
     }
 
     @DeleteMapping("/{id}")
     public Mono<ResponseEntity<Void>> deleteById(@PathVariable String id) {
-        return postService.deleteById(id)
+        return postService.deletePost(id)
                 .thenReturn(ResponseEntity.noContent().build());
     }
 }

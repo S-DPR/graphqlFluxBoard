@@ -76,24 +76,24 @@ public class PostService {
         return postRepository.existsById(postId);
     }
 
-    public Mono<Post> save(Post post) {
+    public Mono<Post> createPost(Post post) {
         return postRepository.save(post);
     }
 
-    public Mono<Post> save(SavePostInput savePostInput) {
+    public Mono<Post> createPost(SavePostInput savePostInput) {
         return userService.verify(savePostInput.getUserId(), savePostInput.getPassword())
-                .then(save(Post.of(savePostInput)));
+                .then(createPost(Post.of(savePostInput)));
     }
 
-    public Mono<Void> deleteById(String id) {
+    public Mono<Void> deletePost(String id) {
         return postRepository.deleteById(id);
     }
 
-    public Mono<Void> deleteById(DeletePostInput deletePostInput) {
+    public Mono<Void> deletePost(DeletePostInput deletePostInput) {
         String id = deletePostInput.getPostId();
         String password = deletePostInput.getPassword();
         return findPostById(id)
                 .flatMap(post -> userService.verify(post.getUserId(), password))
-                .then(deleteById(id));
+                .then(deletePost(id));
     }
 }

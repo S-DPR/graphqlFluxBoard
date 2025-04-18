@@ -32,11 +32,11 @@ public class UserResolver {
 
     @MutationMapping
     public Mono<User> createUser(@Valid @Argument SaveUserInput saveUserInput) {
-        return userService.save(saveUserInput);
+        return userService.createUser(saveUserInput);
     }
 
     @MutationMapping
     public Mono<Boolean> deleteUser(@Valid @Argument DeleteUserInput deleteUserInput) {
-        return userService.deleteById(deleteUserInput).thenReturn(true);
+        return userService.deleteUser(deleteUserInput).thenReturn(true);
     }
 }

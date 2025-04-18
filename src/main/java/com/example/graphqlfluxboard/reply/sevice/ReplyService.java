@@ -37,16 +37,16 @@ public class ReplyService {
         return replyRepository.findByCommentIdIn(commentIds);
     }
 
-    public Mono<Reply> saveReply(Reply reply) {
+    public Mono<Reply> createReply(Reply reply) {
         return replyRepository.save(reply);
     }
 
-    public Mono<Reply> saveReply(SaveReplyInput saveReplyInput) {
+    public Mono<Reply> createReply(SaveReplyInput saveReplyInput) {
         return userService.verify(saveReplyInput.getUserId(), saveReplyInput.getPassword())
                 .then(commentService.existsById(saveReplyInput.getCommentId()))
                 .flatMap(exist -> {
                     if (exist) {
-                        return saveReply(Reply.of(saveReplyInput));
+                        return createReply(Reply.of(saveReplyInput));
                     }
                     return Mono.error(new NotFound(Resources.COMMENT));
                 });
@@ -56,7 +56,7 @@ public class ReplyService {
         return replyRepository.deleteById(replyId);
     }
 
-    public Mono<Void> deleteById(DeleteReplyInput deleteReplyInput) {
+    public Mono<Void> deleteReply(DeleteReplyInput deleteReplyInput) {
         String replyId = deleteReplyInput.getReplyId();
         String password = deleteReplyInput.getPassword();
         return findReplyById(replyId)

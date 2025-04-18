@@ -37,18 +37,18 @@ public class UserService {
         return userRepository.existsByUsername(username);
     }
 
-    public Mono<User> save(User user) {
+    public Mono<User> createUser(User user) {
         return userRepository.save(user);
     }
 
-    public Mono<User> save(SaveUserInput saveUserInput) {
+    public Mono<User> createUser(SaveUserInput saveUserInput) {
         String password = passwordService.encryptPassword(saveUserInput.getPassword());
         return existsByUsername(saveUserInput.getUsername())
                 .flatMap(exists -> {
                     if (exists) {
                         return Mono.error(new DuplicateException(Resources.USERNAME));
                     }
-                    return save(User.of(saveUserInput, password));
+                    return createUser(User.of(saveUserInput, password));
                 });
     }
 
@@ -56,7 +56,7 @@ public class UserService {
         return userRepository.deleteById(id);
     }
 
-    public Mono<Void> deleteById(DeleteUserInput deleteUserInput) {
+    public Mono<Void> deleteUser(DeleteUserInput deleteUserInput) {
         String id = deleteUserInput.getUserId();
         String password = deleteUserInput.getPassword();
         return findUserById(id)

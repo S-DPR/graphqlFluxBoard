@@ -38,12 +38,12 @@ public class PostResolver {
 
     @MutationMapping
     public Mono<Post> createPost(@Valid @Argument SavePostInput savePostInput) {
-        return postService.save(savePostInput);
+        return postService.createPost(savePostInput);
     }
 
     @MutationMapping
     public Mono<Boolean> deletePost(@Valid @Argument DeletePostInput deletePostInput) {
-        return postService.deleteById(deletePostInput).thenReturn(true);
+        return postService.deletePost(deletePostInput).thenReturn(true);
     }
 
     @BatchMapping(field = "user", typeName = "Post")
