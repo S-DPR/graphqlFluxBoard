@@ -93,16 +93,17 @@ public class CommentTest extends TestSupport {
                 commentService.getCommentByPostId(post.getId()).collectList()
                         .flatMap(this::groupRepliesByCommentId)
         )
-        .assertNext(data -> {
-            Assertions.assertThat(data)
-                    .containsOnlyKeys(expectedRepliesByCommentId.keySet()) // 오 이런거도있네 신기한데
-                    .allSatisfy((commentId, replies) -> {
-                        Assertions.assertThat(replies)
-                                .as("Replies for commentId: %s", commentId) // 실패시 이거 띄워준다
-                                .hasSize(expectedRepliesByCommentId.get(commentId).size())
-                                .usingRecursiveFieldByFieldElementComparatorIgnoringFields("createdAt")
-                                .containsExactlyInAnyOrderElementsOf(expectedRepliesByCommentId.get(commentId));
-                    });
+        .assertNext(actualRepliesMap -> {
+            expectedRepliesByCommentId.forEach((commentId, expectedReplies) -> {
+                List<Reply> actualReplies = actualRepliesMap.get(commentId);
+
+                Assertions.assertThat(actualReplies)
+                        .as("Replies for commentId: %s", commentId)
+                        .isNotNull()
+                        .hasSize(expectedReplies.size())
+                        .usingRecursiveFieldByFieldElementComparatorIgnoringFields("createdAt")
+                        .containsExactlyInAnyOrderElementsOf(expectedReplies);
+            });
         })
         .verifyComplete();
     }
