@@ -26,7 +26,7 @@ public class CommentService {
 
     public Mono<Comment> getComment(String id) {
         return commentRepository.findById(id)
-                .switchIfEmpty(Mono.error(new NotFound(Resources.REPLY)));
+                .switchIfEmpty(Mono.error(new NotFound(Resources.COMMENT)));
     }
 
     public Flux<Comment> getCommentByPostId(String postId) {
