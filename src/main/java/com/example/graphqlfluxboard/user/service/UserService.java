@@ -21,11 +21,11 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordService passwordService;
 
-    public Flux<User> findAll() {
+    public Flux<User> findAllUsers() {
         return userRepository.findAll();
     }
 
-    public Mono<User> findById(String id) {
+    public Mono<User> findUserById(String id) {
         return userRepository.findById(id);
     }
 
@@ -59,13 +59,13 @@ public class UserService {
     public Mono<Void> deleteById(DeleteUserInput deleteUserInput) {
         String id = deleteUserInput.getUserId();
         String password = deleteUserInput.getPassword();
-        return findById(id)
+        return findUserById(id)
                 .flatMap(user -> verify(user.getId(), password))
                 .then(deleteUser(id));
     }
 
     public Mono<Void> verify(String userId, String password) {
-        Mono<User> userMono = findById(userId)
+        Mono<User> userMono = findUserById(userId)
                 .switchIfEmpty(Mono.error(new AuthException("없는 유저래요~")));
         return userMono.flatMap(user -> {
             if (!passwordService.checkPassword(password, user.getPassword())) {

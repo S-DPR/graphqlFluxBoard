@@ -1,6 +1,6 @@
 extend type Query {
-    posts(postFilterInput: PostFilterInput): [Post]
-    post(postId: ID!): Post
+    findAllPosts(postFilterInput: PostFilterInput): [Post]
+    findPostById(postId: ID!): Post
 }
 
 extend type Mutation {

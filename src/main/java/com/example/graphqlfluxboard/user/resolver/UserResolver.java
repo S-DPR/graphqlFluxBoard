@@ -21,13 +21,13 @@ public class UserResolver {
     private final UserService userService;
 
     @QueryMapping
-    public Flux<User> users() {
-        return userService.findAll();
+    public Flux<User> findAllUsers() {
+        return userService.findAllUsers();
     }
 
     @QueryMapping
-    public Mono<User> user(@Argument String userId) {
-        return userService.findById(userId);
+    public Mono<User> findUserById(@Argument String userId) {
+        return userService.findUserById(userId);
     }
 
     @MutationMapping

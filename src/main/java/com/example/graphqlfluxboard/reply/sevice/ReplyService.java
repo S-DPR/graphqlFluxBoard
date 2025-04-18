@@ -24,11 +24,11 @@ public class ReplyService {
     private final UserService userService;
     private final CommentService commentService;
 
-    public Flux<Reply> replies() {
+    public Flux<Reply> findAllReplies() {
         return replyRepository.findAll();
     }
 
-    public Mono<Reply> reply(String replyId) {
+    public Mono<Reply> findReplyById(String replyId) {
         return replyRepository.findById(replyId)
                 .switchIfEmpty(Mono.error(new NotFound(Resources.REPLY)));
     }
@@ -59,7 +59,7 @@ public class ReplyService {
     public Mono<Void> deleteById(DeleteReplyInput deleteReplyInput) {
         String replyId = deleteReplyInput.getReplyId();
         String password = deleteReplyInput.getPassword();
-        return reply(replyId)
+        return findReplyById(replyId)
                 .flatMap(reply -> userService.verify(reply.getUserId(), password))
                 .then(deleteReply(replyId));
     }

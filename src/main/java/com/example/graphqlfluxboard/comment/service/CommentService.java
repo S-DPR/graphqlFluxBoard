@@ -20,16 +20,16 @@ public class CommentService {
     private final UserService userService;
     private final PostService postService;
 
-    public Flux<Comment> getComments() {
+    public Flux<Comment> findAllComments() {
         return commentRepository.findAll();
     }
 
-    public Mono<Comment> getComment(String id) {
+    public Mono<Comment> findCommentById(String id) {
         return commentRepository.findById(id)
                 .switchIfEmpty(Mono.error(new NotFound(Resources.COMMENT)));
     }
 
-    public Flux<Comment> getCommentByPostId(String postId) {
+    public Flux<Comment> findCommentByPostId(String postId) {
         return commentRepository.findAllByPostIdOrderByCreatedAtAsc(postId);
     }
 
@@ -37,16 +37,16 @@ public class CommentService {
         return commentRepository.existsById(id);
     }
 
-    public Mono<Comment> saveComment(Comment comment) {
+    public Mono<Comment> createComment(Comment comment) {
         return commentRepository.save(comment);
     }
 
-    public Mono<Comment> saveComment(SaveCommentInput saveCommentInput) {
+    public Mono<Comment> createComment(SaveCommentInput saveCommentInput) {
         return userService.verify(saveCommentInput.getUserId(), saveCommentInput.getPassword())
                 .then(postService.existsById(saveCommentInput.getPostId()))
                 .flatMap(exist -> {
                     if (exist) {
-                        return saveComment(Comment.of(saveCommentInput));
+                        return createComment(Comment.of(saveCommentInput));
                     }
                     return Mono.error(new NotFound(Resources.POST));
                 });
@@ -56,11 +56,11 @@ public class CommentService {
         return commentRepository.deleteById(id);
     }
 
-    public Mono<Void> deleteById(DeleteCommentInput deleteCommentInput) {
+    public Mono<Void> deleteComment(DeleteCommentInput deleteCommentInput) {
         String id = deleteCommentInput.getCommentId();
         String password = deleteCommentInput.getPassword();
 
-        return getComment(id)
+        return findCommentById(id)
                 .flatMap(comment -> userService.verify(comment.getUserId(), password))
                 .then(deleteComment(id));
     }

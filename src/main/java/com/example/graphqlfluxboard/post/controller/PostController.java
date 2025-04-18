@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
 import java.time.Instant;
-import java.time.LocalDateTime;
 
 @RestController
 @RequestMapping("/post")
@@ -25,7 +24,7 @@ public class PostController {
 
     @GetMapping("/{id}")
     public Mono<ResponseEntity<Post>> findById(@PathVariable String id) {
-        return postService.findById(id)
+        return postService.findPostById(id)
                 .map(ResponseEntity::ok)
                 .defaultIfEmpty(ResponseEntity.notFound().build());
     }

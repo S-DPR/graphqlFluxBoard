@@ -15,7 +15,6 @@ import org.springframework.stereotype.Controller;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -28,13 +27,13 @@ public class PostResolver {
     private final UserService userService;
 
     @QueryMapping
-    public Flux<Post> posts(@Argument PostFilterInput postFilterInput) {
-        return postService.findAll(postFilterInput);
+    public Flux<Post> findAllPosts(@Argument PostFilterInput postFilterInput) {
+        return postService.findAllPosts(postFilterInput);
     }
 
     @QueryMapping
-    public Mono<Post> post(@Argument String postId) {
-        return postService.findById(postId);
+    public Mono<Post> findPostById(@Argument String postId) {
+        return postService.findPostById(postId);
     }
 
     @MutationMapping

@@ -1,7 +1,7 @@
 extend type Query {
-    comments: [Comment]
+    findAllComments: [Comment]
     commentsByPostId(postId: ID!): [Comment]
-    comment(commentId: ID!): Comment
+    findCommentById(commentId: ID!): Comment
 }
 
 extend type Mutation {

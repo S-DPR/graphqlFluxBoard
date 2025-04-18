@@ -1,6 +1,6 @@
 extend type Query {
-    replies: [Reply]
-    reply(replyId: ID!): Reply
+    findAllReplies: [Reply]
+    findReplyById(replyId: ID!): Reply
 }
 
 extend type Mutation {

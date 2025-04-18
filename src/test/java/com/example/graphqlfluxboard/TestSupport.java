@@ -23,6 +23,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
 public abstract class TestSupport {
+    protected String TEST_PASSWORD = "TestPW";
+    protected String WRONG_PASSWORD = "WRONG";
+
     @Autowired
     protected CommentService commentService;
     @Autowired
@@ -81,7 +84,7 @@ public abstract class TestSupport {
         commentInput.setUserId(userId);
         commentInput.setPassword(pw);
         commentInput.setComment(comment);
-        Comment comment_ = commentService.saveComment(commentInput).block();
+        Comment comment_ = commentService.createComment(commentInput).block();
 
         notNullTest("Comment", comment_);
         equalTest("Comment", "postId", postId, comment_.getPostId());

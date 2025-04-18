@@ -9,7 +9,6 @@ import com.example.graphqlfluxboard.reply.sevice.ReplyService;
 import com.example.graphqlfluxboard.user.domain.User;
 import com.example.graphqlfluxboard.user.service.UserService;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.graphql.data.method.annotation.*;
@@ -31,28 +30,28 @@ public class CommentResolver {
     private final UserService userService;
 
     @QueryMapping
-    public Flux<Comment> comments() {
-        return commentService.getComments();
+    public Flux<Comment> findAllComments() {
+        return commentService.findAllComments();
     }
 
     @QueryMapping
-    public Mono<Comment> comment(@Argument String commentId) {
-        return commentService.getComment(commentId);
+    public Mono<Comment> findCommentById(@Argument String commentId) {
+        return commentService.findCommentById(commentId);
     }
 
     @QueryMapping
     public Flux<Comment> commentsByPostId(@Argument String postId) {
-        return commentService.getCommentByPostId(postId);
+        return commentService.findCommentByPostId(postId);
     }
 
     @MutationMapping
     public Mono<Comment> createComment(@Valid @Argument SaveCommentInput saveCommentInput) {
-        return commentService.saveComment(saveCommentInput);
+        return commentService.createComment(saveCommentInput);
     }
 
     @MutationMapping
     public Mono<Boolean> deleteComment(@Valid @Argument DeleteCommentInput deleteCommentInput) {
-        return commentService.deleteById(deleteCommentInput).thenReturn(true);
+        return commentService.deleteComment(deleteCommentInput).thenReturn(true);
     }
 
     @BatchMapping(field = "replies", typeName = "Comment")

@@ -26,13 +26,13 @@ public class ReplyResolver {
     private final UserService userService;
 
     @QueryMapping
-    public Flux<Reply> replies() {
-        return replyService.replies();
+    public Flux<Reply> findAllReplies() {
+        return replyService.findAllReplies();
     }
 
     @QueryMapping
-    public Mono<Reply> reply(@Argument String replyId) {
-        return replyService.reply(replyId);
+    public Mono<Reply> findReplyById(@Argument String replyId) {
+        return replyService.findReplyById(replyId);
     }
 
     @MutationMapping

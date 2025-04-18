@@ -32,12 +32,12 @@ public class PostService {
     private final ReactiveMongoTemplate mongoTemplate;
     private final UserService userService;
 
-    public Mono<Post> findById(String postId) {
+    public Mono<Post> findPostById(String postId) {
         return postRepository.findById(postId)
                 .switchIfEmpty(Mono.error(new NotFound(Resources.POST)));
     }
 
-    public Flux<Post> findAll(PostFilterInput postFilterInput) {
+    public Flux<Post> findAllPosts(PostFilterInput postFilterInput) {
         if (!ALLOWED_SORT_FIELDS.contains(postFilterInput.getSortField())) {
             throw new NotSupport("다음 필드는 정렬을 지원하지 않습니다. : " + postFilterInput.getSortField());
         }
@@ -92,7 +92,7 @@ public class PostService {
     public Mono<Void> deleteById(DeletePostInput deletePostInput) {
         String id = deletePostInput.getPostId();
         String password = deletePostInput.getPassword();
-        return findById(id)
+        return findPostById(id)
                 .flatMap(post -> userService.verify(post.getUserId(), password))
                 .then(deleteById(id));
     }
