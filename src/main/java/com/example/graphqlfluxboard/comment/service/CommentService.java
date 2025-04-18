@@ -43,7 +43,7 @@ public class CommentService {
 
     public Mono<Comment> saveComment(SaveCommentInput saveCommentInput) {
         return userService.verify(saveCommentInput.getUserId(), saveCommentInput.getPassword())
-                .then(Mono.defer(() -> postService.existsById(saveCommentInput.getPostId())))
+                .then(postService.existsById(saveCommentInput.getPostId()))
                 .flatMap(exist -> {
                     if (exist) {
                         return saveComment(Comment.of(saveCommentInput));

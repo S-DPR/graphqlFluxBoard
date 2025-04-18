@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import javax.swing.plaf.PanelUI;
 import java.util.List;
 
 @Service
@@ -43,7 +44,7 @@ public class ReplyService {
 
     public Mono<Reply> saveReply(SaveReplyInput saveReplyInput) {
         return userService.verify(saveReplyInput.getUserId(), saveReplyInput.getPassword())
-                .then(Mono.defer(() -> commentService.existsById(saveReplyInput.getCommentId())))
+                .then(commentService.existsById(saveReplyInput.getCommentId()))
                 .flatMap(exist -> {
                     if (exist) {
                         return saveReply(Reply.of(saveReplyInput));
