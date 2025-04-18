@@ -15,7 +15,7 @@ type Comment {
     user: User
     comment: String
     replies: [Reply!]
-    createdAt: String
+    createdAt: DateTime
 }
 
 input SaveCommentInput {

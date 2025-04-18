@@ -13,7 +13,7 @@ type Post {
     title: String!
     user: User # 유저는 없을수도 있으니까 (글 쓴 후 탈퇴)
     content: String!
-    createdAt: String
+    createdAt: DateTime
 }
 
 input SavePostInput {

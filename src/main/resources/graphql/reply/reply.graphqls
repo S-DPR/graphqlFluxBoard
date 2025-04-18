@@ -13,7 +13,7 @@ type Reply {
     commentId: ID!
     user: User
     content: String
-    createdAt: String
+    createdAt: DateTime
 }
 
 input SaveReplyInput {

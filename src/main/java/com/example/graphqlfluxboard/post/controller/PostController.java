@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
 
 @RestController
@@ -31,7 +32,7 @@ public class PostController {
 
     @PostMapping("/")
     public Mono<Post> save(@RequestBody Post post) {
-        post.setCreatedAt(LocalDateTime.now());
+        post.setCreatedAt(Instant.now());
         return postService.save(post);
     }
 

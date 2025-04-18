@@ -5,6 +5,7 @@ import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
 
 @Getter
@@ -22,14 +23,14 @@ public class Post {
     private String title;
     private String content;
     private String userId;
-    private LocalDateTime createdAt;
+    private Instant createdAt;
 
     public static Post of(SavePostInput savePostInput) {
         return Post.builder()
                 .title(savePostInput.getTitle())
                 .content(savePostInput.getContent())
                 .userId(savePostInput.getUserId())
-                .createdAt(LocalDateTime.now())
+                .createdAt(Instant.now())
                 .build();
     }
 }
