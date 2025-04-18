@@ -1,3 +1,14 @@
+extend type Query {
+    comments: [Comment]
+    commentsByPostId(postId: ID!): [Comment]
+    comment(commentId: ID!): Comment
+}
+
+extend type Mutation {
+    createComment(saveCommentInput: SaveCommentInput!): Comment
+    deleteComment(deleteCommentInput: DeleteCommentInput!): Boolean
+}
+
 type Comment {
     id: ID!
     postId: ID!

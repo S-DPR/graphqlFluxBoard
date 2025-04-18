@@ -1,3 +1,13 @@
+extend type Query {
+    users: [User]
+    user(userId: ID!): User
+}
+
+extend type Mutation {
+    createUser(saveUserInput: SaveUserInput!): User
+    deleteUser(deleteUserInput: DeleteUserInput!): Boolean
+}
+
 type User {
     id: ID!
     username: String!

@@ -1,3 +1,13 @@
+extend type Query {
+    replies: [Reply]
+    reply(replyId: ID!): Reply
+}
+
+extend type Mutation {
+    createReply(saveReplyInput: SaveReplyInput!): Reply
+    deleteReply(deleteReplyInput: DeleteReplyInput!): Boolean
+}
+
 type Reply {
     id: ID!
     commentId: ID!
