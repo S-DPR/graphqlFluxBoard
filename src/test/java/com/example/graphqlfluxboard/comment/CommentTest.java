@@ -62,12 +62,7 @@ public class CommentTest extends TestSupport {
         User user = saveUser("TestUser", "TestPW");
         Post post = savePost("Test1", "TestContent", user.getId(), "TestPW");
 
-        SaveCommentInput input = new SaveCommentInput();
-        input.setUserId(user.getId());
-        input.setComment("TestComment");
-        input.setPostId(post.getId());
-        input.setPassword("WRONG");
-
+        SaveCommentInput input = new SaveCommentInput(post.getId(), user.getId(), "WRONG", "TestComment");
         StepVerifier.create(commentService.saveComment(input))
                 .expectError(AuthException.class)
                 .verify();
