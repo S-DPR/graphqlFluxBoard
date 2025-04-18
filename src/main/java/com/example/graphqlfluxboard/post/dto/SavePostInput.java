@@ -3,15 +3,15 @@ package com.example.graphqlfluxboard.post.dto;
 import com.example.graphqlfluxboard.common.validation.DTOValidationMessage;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 @Getter
 @Setter
 @ToString
 @EqualsAndHashCode
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class SavePostInput {
     @Size(min = 1, max = 100, message = DTOValidationMessage.TITLE_SIZE_LIMIT)
     private String title;
