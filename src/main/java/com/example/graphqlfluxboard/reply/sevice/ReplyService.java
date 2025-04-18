@@ -33,7 +33,7 @@ public class ReplyService {
                 .switchIfEmpty(Mono.error(new NotFound(Resources.REPLY)));
     }
 
-    public Flux<Reply> findAllByCommentIds(List<String> commentIds) {
+    public Flux<Reply> findAllRepliesByCommentIds(List<String> commentIds) {
         return replyRepository.findByCommentIdIn(commentIds);
     }
 

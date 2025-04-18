@@ -42,7 +42,7 @@ public class CommentTest extends TestSupport {
         List<String> commentIds = comments.stream().map(Comment::getId).toList();
         Assertions.assertThat(commentIds).isNotNull();
 
-        Map<String, List<Reply>> data = replyService.findAllByCommentIds(commentIds)
+        Map<String, List<Reply>> data = replyService.findAllRepliesByCommentIds(commentIds)
                 .groupBy(Reply::getCommentId)
                 .flatMap(groupedFlux -> groupedFlux
                         .collectSortedList(Comparator.comparing(Reply::getCreatedAt))
@@ -137,7 +137,7 @@ public class CommentTest extends TestSupport {
 
     private Mono<Map<String, List<Reply>>> groupRepliesByCommentId(List<Comment> comments) {
         List<String> commentIds = comments.stream().map(Comment::getId).toList();
-        return replyService.findAllByCommentIds(commentIds)
+        return replyService.findAllRepliesByCommentIds(commentIds)
                 .groupBy(Reply::getCommentId)
                 .flatMap(groupedFlux -> groupedFlux
                         .collectSortedList(Comparator.comparing(Reply::getCreatedAt))

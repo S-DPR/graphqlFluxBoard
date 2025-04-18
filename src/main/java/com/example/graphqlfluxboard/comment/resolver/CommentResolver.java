@@ -58,7 +58,7 @@ public class CommentResolver {
     public Mono<Map<Comment, List<Reply>>> commentsWithReplies(List<Comment> comments) {
         Map<String, Comment> commentMap = comments.stream().collect(Collectors.toMap(Comment::getId, c -> c));
 
-        return replyService.findAllByCommentIds(commentMap.keySet().stream().toList())
+        return replyService.findAllRepliesByCommentIds(commentMap.keySet().stream().toList())
                 .groupBy(Reply::getCommentId)
                 .flatMap(groupedFlux -> groupedFlux
                         .collectSortedList(Comparator.comparing(Reply::getCreatedAt))
