@@ -54,7 +54,9 @@ public abstract class TestSupport {
         userInput.setUsername(username);
         userInput.setPassword(pw);
         User user = userService.save(userInput).block();
-        Assertions.assertThat(user).isNotNull();
+
+        notNullTest("User", user);
+        equalTest("User", "username", username, user.getUsername());
         return user;
     }
 
@@ -65,7 +67,11 @@ public abstract class TestSupport {
         postInput.setPassword(pw);
         postInput.setUserId(userId);
         Post post = postService.save(postInput).block();
-        Assertions.assertThat(post).isNotNull();
+
+        notNullTest("Post", post);
+        equalTest("Post", "title", title, post.getTitle());
+        equalTest("Post", "content", content, post.getContent());
+        equalTest("Post", "userId", userId, post.getUserId());
         return post;
     }
 
@@ -76,7 +82,11 @@ public abstract class TestSupport {
         commentInput.setPassword(pw);
         commentInput.setComment(comment);
         Comment comment_ = commentService.saveComment(commentInput).block();
-        Assertions.assertThat(comment_).isNotNull();
+
+        notNullTest("Comment", comment_);
+        equalTest("Comment", "postId", postId, comment_.getPostId());
+        equalTest("Comment", "comment", comment, comment_.getComment());
+        equalTest("Comment", "userId", userId, comment_.getUserId());
         return comment_;
     }
 
@@ -87,7 +97,23 @@ public abstract class TestSupport {
         replyInput.setUserId(userId);
         replyInput.setPassword(pw);
         Reply reply = replyService.saveReply(replyInput).block();
-        Assertions.assertThat(reply).isNotNull();
+
+        notNullTest("Reply", reply);
+        equalTest("Reply", "commentId", commentId, reply.getCommentId());
+        equalTest("Reply", "content", content, reply.getContent());
+        equalTest("Reply", "userId", userId, reply.getUserId());
         return reply;
+    }
+
+    private void notNullTest(String domainName, Object domain) {
+        Assertions.assertThat(domain)
+                .as(String.format("%s not saved", domainName))
+                .isNotNull();
+    }
+
+    private <T> void equalTest(String domainName, String fieldName, T expected, T actual) {
+        Assertions.assertThat(expected)
+                .as(String.format("%s %s is not equal", domainName, fieldName))
+                .isEqualTo(actual);
     }
 }
