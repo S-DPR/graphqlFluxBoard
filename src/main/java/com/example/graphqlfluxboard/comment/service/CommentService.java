@@ -7,11 +7,14 @@ import com.example.graphqlfluxboard.comment.repos.CommentRepository;
 import com.example.graphqlfluxboard.common.exception.impl.NotFound;
 import com.example.graphqlfluxboard.common.exception.enums.Resources;
 import com.example.graphqlfluxboard.post.service.PostService;
+import com.example.graphqlfluxboard.reply.sevice.ReplyService;
 import com.example.graphqlfluxboard.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import java.util.List;
 
 @RequiredArgsConstructor
 @Service
@@ -19,6 +22,7 @@ public class CommentService {
     private final CommentRepository commentRepository;
     private final UserService userService;
     private final PostService postService;
+    private final ReplyService replyService;
 
     public Flux<Comment> findAllComments() {
         return commentRepository.findAll();
@@ -53,7 +57,8 @@ public class CommentService {
     }
 
     public Mono<Void> deleteComment(String id) {
-        return commentRepository.deleteById(id);
+        return replyService.deleteReplyByCommentIds(List.of(id))
+                .then(commentRepository.deleteById(id));
     }
 
     public Mono<Void> deleteComment(DeleteCommentInput deleteCommentInput) {
