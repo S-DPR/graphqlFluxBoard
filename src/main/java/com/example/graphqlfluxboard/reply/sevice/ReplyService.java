@@ -1,6 +1,7 @@
 package com.example.graphqlfluxboard.reply.sevice;
 
 import com.example.graphqlfluxboard.comment.service.CommentService;
+import com.example.graphqlfluxboard.common.exception.impl.DeleteFailException;
 import com.example.graphqlfluxboard.common.exception.impl.NotFound;
 import com.example.graphqlfluxboard.common.exception.enums.Resources;
 import com.example.graphqlfluxboard.reply.domain.Reply;
@@ -62,5 +63,10 @@ public class ReplyService {
         return findReplyById(replyId)
                 .flatMap(reply -> userService.verify(reply.getUserId(), password))
                 .then(deleteReply(replyId));
+    }
+
+    public Mono<Void> deleteReplyByCommentIds(List<String> commentIds) {
+        return replyRepository.deleteByCommentIdIn(commentIds)
+                .onErrorMap(e -> new DeleteFailException(Resources.REPLY));
     }
 }
