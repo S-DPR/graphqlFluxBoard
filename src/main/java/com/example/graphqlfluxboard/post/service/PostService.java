@@ -1,5 +1,7 @@
 package com.example.graphqlfluxboard.post.service;
 
+import com.example.graphqlfluxboard.comment.repos.CommentRepository;
+import com.example.graphqlfluxboard.comment.service.CommentService;
 import com.example.graphqlfluxboard.common.exception.impl.NotFound;
 import com.example.graphqlfluxboard.common.exception.impl.NotSupport;
 import com.example.graphqlfluxboard.common.exception.enums.Resources;
@@ -10,6 +12,7 @@ import com.example.graphqlfluxboard.post.dto.SavePostInput;
 import com.example.graphqlfluxboard.post.enums.FilterType;
 import com.example.graphqlfluxboard.post.enums.SortOrder;
 import com.example.graphqlfluxboard.post.repos.PostRepository;
+import com.example.graphqlfluxboard.reply.sevice.ReplyService;
 import com.example.graphqlfluxboard.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
@@ -31,6 +34,7 @@ public class PostService {
     private final PostRepository postRepository;
     private final ReactiveMongoTemplate mongoTemplate;
     private final UserService userService;
+    private final CommentService commentService;
 
     public Mono<Post> findPostById(String postId) {
         return postRepository.findById(postId)
@@ -72,10 +76,6 @@ public class PostService {
         };
     }
 
-    public Mono<Boolean> existsById(String postId) {
-        return postRepository.existsById(postId);
-    }
-
     public Mono<Post> createPost(Post post) {
         return postRepository.save(post);
     }
@@ -86,7 +86,8 @@ public class PostService {
     }
 
     public Mono<Void> deletePost(String id) {
-        return postRepository.deleteById(id);
+        return commentService.deleteCommentByPostId(id)
+                .then(postRepository.deleteById(id));
     }
 
     public Mono<Void> deletePost(DeletePostInput deletePostInput) {
