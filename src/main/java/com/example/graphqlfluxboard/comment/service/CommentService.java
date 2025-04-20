@@ -6,6 +6,7 @@ import com.example.graphqlfluxboard.comment.dto.SaveCommentInput;
 import com.example.graphqlfluxboard.comment.repos.CommentRepository;
 import com.example.graphqlfluxboard.common.exception.impl.NotFound;
 import com.example.graphqlfluxboard.common.exception.enums.Resources;
+import com.example.graphqlfluxboard.common.validation.ExistenceValidator;
 import com.example.graphqlfluxboard.post.service.PostService;
 import com.example.graphqlfluxboard.reply.sevice.ReplyService;
 import com.example.graphqlfluxboard.user.service.UserService;
@@ -21,7 +22,7 @@ import java.util.List;
 public class CommentService {
     private final CommentRepository commentRepository;
     private final UserService userService;
-    private final PostService postService;
+    private final ExistenceValidator existenceValidator;
     private final ReplyService replyService;
 
     public Flux<Comment> findAllComments() {
@@ -37,23 +38,14 @@ public class CommentService {
         return commentRepository.findAllByPostIdOrderByCreatedAtAsc(postId);
     }
 
-    public Mono<Boolean> existsById(String id) {
-        return commentRepository.existsById(id);
-    }
-
     public Mono<Comment> createComment(Comment comment) {
         return commentRepository.save(comment);
     }
 
     public Mono<Comment> createComment(SaveCommentInput saveCommentInput) {
         return userService.verify(saveCommentInput.getUserId(), saveCommentInput.getPassword())
-                .then(postService.existsById(saveCommentInput.getPostId()))
-                .flatMap(exist -> {
-                    if (exist) {
-                        return createComment(Comment.of(saveCommentInput));
-                    }
-                    return Mono.error(new NotFound(Resources.POST));
-                });
+                .then(existenceValidator.validatePostExists(saveCommentInput.getPostId()))
+                .then(createComment(Comment.of(saveCommentInput)));
     }
 
     public Mono<Void> deleteComment(String id) {
@@ -68,5 +60,11 @@ public class CommentService {
         return findCommentById(id)
                 .flatMap(comment -> userService.verify(comment.getUserId(), password))
                 .then(deleteComment(id));
+    }
+
+    public Mono<Void> deleteCommentByPostId(String postId) {
+        return findCommentByPostId(postId).map(Comment::getId).collectList()
+                .flatMap(replyService::deleteReplyByCommentIds)
+                .then(commentRepository.deleteByPostId(postId));
     }
 }
