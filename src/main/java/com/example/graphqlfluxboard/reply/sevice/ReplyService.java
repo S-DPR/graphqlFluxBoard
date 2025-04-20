@@ -66,6 +66,7 @@ public class ReplyService {
     }
 
     public Mono<Void> deleteReplyByCommentIds(List<String> commentIds) {
+        if (commentIds.isEmpty()) return Mono.empty();
         return replyRepository.deleteByCommentIdIn(commentIds)
                 .onErrorMap(e -> new DeleteFailException(Resources.REPLY));
     }
