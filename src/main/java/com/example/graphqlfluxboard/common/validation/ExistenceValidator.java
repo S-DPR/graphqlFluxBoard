@@ -3,6 +3,7 @@ package com.example.graphqlfluxboard.common.validation;
 import com.example.graphqlfluxboard.comment.repos.CommentRepository;
 import com.example.graphqlfluxboard.common.exception.enums.Resources;
 import com.example.graphqlfluxboard.common.exception.impl.DeleteFailException;
+import com.example.graphqlfluxboard.common.exception.impl.NotFound;
 import com.example.graphqlfluxboard.post.repos.PostRepository;
 import com.example.graphqlfluxboard.reply.repos.ReplyRepository;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +19,7 @@ public class ExistenceValidator {
 
     private Mono<Void> validateExistence(Mono<Boolean> existenceCheck, Resources resource) {
         return existenceCheck.flatMap(exists ->
-                exists ? Mono.empty() : Mono.error(new DeleteFailException(resource))
+                exists ? Mono.empty() : Mono.error(new NotFound(resource))
         );
     }
 
