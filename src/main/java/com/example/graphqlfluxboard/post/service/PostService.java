@@ -13,6 +13,7 @@ import com.example.graphqlfluxboard.post.enums.FilterType;
 import com.example.graphqlfluxboard.post.enums.SortOrder;
 import com.example.graphqlfluxboard.post.repos.PostRepository;
 import com.example.graphqlfluxboard.reply.sevice.ReplyService;
+import com.example.graphqlfluxboard.user.domain.User;
 import com.example.graphqlfluxboard.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
@@ -85,7 +86,8 @@ public class PostService {
 
     public Mono<Post> createPost(SavePostInput savePostInput) {
         return userService.verify(savePostInput.getUserId(), savePostInput.getPassword())
-                .then(createPost(Post.of(savePostInput)));
+                .then(userService.findUserById(savePostInput.getUserId()))
+                .flatMap(user -> createPost(Post.of(savePostInput, user.getUsername())));
     }
 
     public Mono<Void> deletePost(String id) {
