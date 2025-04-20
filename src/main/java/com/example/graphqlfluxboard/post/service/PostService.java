@@ -47,7 +47,10 @@ public class PostService {
         }
 
         List<Criteria> criteria = getCriteria(postFilterInput.getType(), postFilterInput.getKeyword());
-        Query query = new Query(new Criteria().andOperator(criteria));
+        Query query = new Query();
+        if (!criteria.isEmpty()) {
+            query.addCriteria(new Criteria().andOperator(criteria.toArray(new Criteria[0])));
+        }
         query.skip((long) (postFilterInput.getPage()-1) * postFilterInput.getSizePerPage());
         query.limit(postFilterInput.getSizePerPage());
 
