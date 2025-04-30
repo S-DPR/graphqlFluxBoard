@@ -23,13 +23,15 @@ public class Post {
     private String title;
     private String content;
     private String userId;
+    private String authorName;
     private Instant createdAt;
 
-    public static Post of(SavePostInput savePostInput) {
+    public static Post of(SavePostInput savePostInput, String username) {
         return Post.builder()
                 .title(savePostInput.getTitle())
                 .content(savePostInput.getContent())
                 .userId(savePostInput.getUserId())
+                .authorName(username)
                 .createdAt(Instant.now())
                 .build();
     }

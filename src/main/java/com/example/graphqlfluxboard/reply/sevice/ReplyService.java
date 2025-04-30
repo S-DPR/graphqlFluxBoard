@@ -1,8 +1,10 @@
 package com.example.graphqlfluxboard.reply.sevice;
 
 import com.example.graphqlfluxboard.comment.service.CommentService;
+import com.example.graphqlfluxboard.common.exception.impl.DeleteFailException;
 import com.example.graphqlfluxboard.common.exception.impl.NotFound;
 import com.example.graphqlfluxboard.common.exception.enums.Resources;
+import com.example.graphqlfluxboard.common.validation.ExistenceValidator;
 import com.example.graphqlfluxboard.reply.domain.Reply;
 import com.example.graphqlfluxboard.reply.dto.DeleteReplyInput;
 import com.example.graphqlfluxboard.reply.dto.SaveReplyInput;
@@ -22,7 +24,7 @@ import java.util.List;
 public class ReplyService {
     private final ReplyRepository replyRepository;
     private final UserService userService;
-    private final CommentService commentService;
+    private final ExistenceValidator existenceValidator;
 
     public Flux<Reply> findAllReplies() {
         return replyRepository.findAll();
@@ -43,13 +45,8 @@ public class ReplyService {
 
     public Mono<Reply> createReply(SaveReplyInput saveReplyInput) {
         return userService.verify(saveReplyInput.getUserId(), saveReplyInput.getPassword())
-                .then(commentService.existsById(saveReplyInput.getCommentId()))
-                .flatMap(exist -> {
-                    if (exist) {
-                        return createReply(Reply.of(saveReplyInput));
-                    }
-                    return Mono.error(new NotFound(Resources.COMMENT));
-                });
+                .then(existenceValidator.validateCommentExists(saveReplyInput.getCommentId()))
+                .then(createReply(Reply.of(saveReplyInput)));
     }
 
     public Mono<Void> deleteReply(String replyId) {
@@ -62,5 +59,11 @@ public class ReplyService {
         return findReplyById(replyId)
                 .flatMap(reply -> userService.verify(reply.getUserId(), password))
                 .then(deleteReply(replyId));
+    }
+
+    public Mono<Void> deleteReplyByCommentIds(List<String> commentIds) {
+        if (commentIds.isEmpty()) return Mono.empty();
+        return replyRepository.deleteByCommentIdIn(commentIds)
+                .onErrorMap(e -> new DeleteFailException(Resources.REPLY));
     }
 }

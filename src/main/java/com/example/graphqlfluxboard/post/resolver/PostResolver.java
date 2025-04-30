@@ -28,6 +28,9 @@ public class PostResolver {
 
     @QueryMapping
     public Flux<Post> findAllPosts(@Argument PostFilterInput postFilterInput) {
+        if (postFilterInput == null) {
+            postFilterInput = new PostFilterInput();
+        }
         return postService.findAllPosts(postFilterInput);
     }
 
