@@ -17,6 +17,6 @@ public class NotFound extends ApplicationError {
 
     @Override
     public String getDefaultMessage() {
-        return resources.getValue() + ": 못찾았대요~";
+        return resources.getValue() + ": Not Founded";
     }
 }

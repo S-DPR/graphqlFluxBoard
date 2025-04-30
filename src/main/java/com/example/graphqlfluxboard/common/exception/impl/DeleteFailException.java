@@ -17,6 +17,6 @@ public class DeleteFailException extends ApplicationError {
 
   @Override
   public String getDefaultMessage() {
-    return resources.getValue() + ": 지우기 실패했대요~";
+    return resources.getValue() + ": Fail to Delete";
   }
 }

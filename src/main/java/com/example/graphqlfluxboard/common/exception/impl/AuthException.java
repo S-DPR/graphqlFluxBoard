@@ -16,6 +16,6 @@ public class AuthException extends ApplicationError {
 
     @Override
     public String getDefaultMessage() {
-        return message + ": 인증에러래요~";
+        return message + ": Auth Error";
     }
 }

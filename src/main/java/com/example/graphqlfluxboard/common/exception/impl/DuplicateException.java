@@ -17,6 +17,6 @@ public class DuplicateException extends ApplicationError {
 
     @Override
     public String getDefaultMessage() {
-        return resources.getValue() + ": 중복됐대요~";
+        return resources.getValue() + ": Duplicated";
     }
 }

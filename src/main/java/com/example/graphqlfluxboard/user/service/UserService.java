@@ -66,10 +66,10 @@ public class UserService {
 
     public Mono<Void> verify(String userId, String password) {
         Mono<User> userMono = findUserById(userId)
-                .switchIfEmpty(Mono.error(new AuthException("없는 유저래요~")));
+                .switchIfEmpty(Mono.error(new AuthException("User Not Found")));
         return userMono.flatMap(user -> {
             if (!passwordService.checkPassword(password, user.getPassword())) {
-                return Mono.error(new AuthException("비밀번호 에러래요~"));
+                return Mono.error(new AuthException("Password Incorrect"));
             }
             return Mono.empty();
         });

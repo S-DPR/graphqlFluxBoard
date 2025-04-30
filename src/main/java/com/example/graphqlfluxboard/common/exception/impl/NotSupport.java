@@ -16,6 +16,6 @@ public class NotSupport extends ApplicationError {
 
     @Override
     public String getDefaultMessage() {
-        return nameOfDuplicated + ": 중복이래요~";
+        return nameOfDuplicated + ": Not Support";
     }
 }
