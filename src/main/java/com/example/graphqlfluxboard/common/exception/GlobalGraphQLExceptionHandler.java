@@ -44,7 +44,7 @@ public class GlobalGraphQLExceptionHandler extends DataFetcherExceptionResolverA
                     .collect(Collectors.joining(", "));
 
             return builder
-                    .message("입력값이 잘못됐대요~: " + errors)
+                    .message("Input Error: " + errors)
                     .extensions(Map.of(
                             "code", "BAD_REQUEST",
                             "exception", ex.getClass().getSimpleName()
@@ -53,7 +53,7 @@ public class GlobalGraphQLExceptionHandler extends DataFetcherExceptionResolverA
         }
 
         return builder
-                .message("알 수 없는 에러래요~: " + ex.getMessage())
+                .message("Unknown Error: " + ex.getMessage())
                 .extensions(Map.of(
                         "code", "INTERNAL_ERROR",
                         "exception", ex.getClass().getSimpleName()
